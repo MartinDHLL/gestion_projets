@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Gestion de projets STEP{% endblock %}
+
+{% block body %}
+
+<style>body {
+    background-color: white;
+}
+</style>
+
+<div id="loginlogo">
+
+<p><img src="https://step.eco/wp-content/uploads/2021/11/Logo-bleu-STEP-RVB-300x128.png" alt="Logo de step"></p>
+
+<span style="position:fixed;background-color:#C7D4E9;width:10%;height:6%;right:35%;top:24%;padding-top:10px;padding-left:1%">Gestion de projets</span>
+
+<hr style="border-color:darkblue;">
+
+</div>
+
+    <form method="post">
+        {% if error %}
+            <div style="color:red;" class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+        {% endif %}
+    
+        {% if app.user %}
+            <div class="mb-3">
+                Vous êtes déjà connecté en tant que {{ app.user.username }}, <a href="{{ path('app_logout') }}">Se déconnecter</a>
+            </div>
+        {% endif %}
+    
+            <label style="position: fixed;left:40%;top:40%;background-color:#F2F2E1;padding-top:5px;padding-bottom:5px;" for="inputUsername">nom d'utilisateur</label>
+        <input style="position: fixed;right:35%;top:40%;border:0;padding-top:5px;padding-bottom:5px;background-color:#CFF2C3;" type="text" value="{{ last_username }}" name="username" id="inputUsername" class="form-control" autocomplete="username" required autofocus>
+        <br>
+        <label style="position: fixed;left:40%;top:45%;background-color:#DDEDE9;padding-top:5px;padding-bottom:5px;" for="inputPassword">mot de passe</label>
+        <input style="position: fixed;right:35%;top:45%;border:0;padding-top:5px;padding-bottom:5px;background-color:#C3EDF2;" type="password" name="password" id="inputPassword" class="form-control" autocomplete="current-password" required>
+    
+        <input  type="hidden" name="_csrf_token"
+               value="{{ csrf_token('authenticate') }}"
+        >
+            <br>
+        <button style="position: fixed;right:35%;bottom:45%;" class="btn btn-lg btn-primary" type="submit">
+            Se connecter
+        </button>
+        
+    </form>
+
+{% endblock %}

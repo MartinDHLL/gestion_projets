@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modification mot de passe{% endblock %}
+
+
+{% block body %}
+
+{% if app.user.username != 'admin' %}
+
+<p>Erreur</p>
+
+{% else %}
+
+<a href="{{ path('admin') }}">retour</a>
+
+{{ form(form) }}
+
+
+{% endif %}
+
+
+{% endblock %}

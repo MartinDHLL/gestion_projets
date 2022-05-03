@@ -1,0 +1,71 @@
+body {
+    background-color: lightgray;
+}
+
+label {
+    padding-right: 10%;
+}
+
+ul li .removeunderline:visited, .removeunderline {
+    text-decoration: none;
+    color: black;
+}
+
+div#loginlogo {
+    position: fixed;
+    left: 40%;
+}
+
+div#topbar {
+    position: fixed;
+    float: inline-start;
+    background-color: black;
+    width: 100%; height: 15%;
+    top: 0%; left: 0%;
+    overflow: hidden;
+}
+
+span#logo {
+    position: absolute;
+    border-style: solid; border-color: darkblue;
+    background-color: white;
+    height: 92%; width: 15%;
+    overflow: hidden;
+}
+
+span#userinfo {
+    position: absolute;
+    padding-left: 20%;
+    color: aliceblue;
+}
+
+span#deconnexion {
+    position: absolute;
+    right: 10%; top: 35%;
+    color: aliceblue;
+    font-size: 20pt;
+}
+
+div#buttonsbox {
+    position: fixed;
+    top: 20%; left: 10%;
+    border-radius: 20px;
+    padding-right: 3%;
+    background-color: #E6E6E6;
+}
+
+div#elementshowbox {
+    position: fixed;
+    background-color: #E6E6E6;
+    width: 80%; height: 55%;
+    top: 35%; left: 10%; right:10%;
+    overflow-y: scroll;
+}
+
+.alignlist li {
+    display: inline;
+}
+
+img {
+    width: 100%;
+}

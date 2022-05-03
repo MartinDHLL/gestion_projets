@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nouveau projet{% endblock %}
+
+{% block body %}
+<style>
+
+    li.button {
+        background-color: white;
+        border-radius: 20px;
+        font-size: 20pt;
+    }
+
+    span.plustext {
+        color: green;
+        font-size: 20pt;
+        border: solid;
+        border-radius: 20px;
+        
+    }
+
+    
+
+</style>
+
+
+
+<div id="topbar">
+
+    <span id="logo"><a href="{{ path('app_projets') }}"><img src="https://step.eco/wp-content/uploads/2021/11/Logo-bleu-STEP-RVB-300x128.png" alt="Logo de Step"></a></span>
+    <span id="deconnexion"><a id="deconnect" href="{{ path('app_logout') }}">Se déconnecter</a></span>
+    
+</div>
+
+<div style="position: fixed;top:20%;">
+
+<a href="{{ path('app_projets') }}">Retour</a>
+
+{{ form(form) }}
+
+</div>
+
+{% endblock %}
+

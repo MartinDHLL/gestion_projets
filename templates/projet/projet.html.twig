@@ -1,0 +1,119 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}STEP : Gestion Projets{% endblock %}
+
+{% block body %}
+<style>
+
+    li.button {
+        background-color: white;
+        border-radius: 20px;
+        font-size: 20pt;
+    }
+
+    span.plustext {
+        color: green;
+        font-size: 20pt;
+        border: solid;
+        border-radius: 20px;
+        
+    }
+
+    
+
+</style>
+
+
+
+<div id="topbar">
+
+    <span id="logo"><a href="{{ path('app_projets') }}"><img src="https://step.eco/wp-content/uploads/2021/11/Logo-bleu-STEP-RVB-300x128.png" alt="Logo de Step"></a></span>
+    <span id="userinfo">
+        
+        {% set count = 0 %}
+        {% for role in app.user.roles %}
+            {% if role == 'ROLE_GESTION' or role == 'ROLE_ADMIN' %}
+                {% set count = 1 %}
+            {% endif %}
+        {% endfor %}
+        
+        <p>{% if count == 1 %}
+            Connecté en tant que gestionnaire 
+            {% else %} 
+            Connecté en tant qu'utilisateur
+            {% endif %}</p>
+    </span>
+
+    <span id="deconnexion"><a id="deconnect" href="{{ path('app_logout') }}">Se déconnecter</a></span>
+</div>
+
+{% if count == 1 %}
+
+    <div id="buttonsbox">
+        <ul class="alignlist">
+            <li class="button"><a class="removeunderline" href="{{ path('app_newproject') }}">Créer un projet<span class="plustext">+</span></a></li>
+            <li class="button"><a class="removeunderline" href="">Consulter les archives</a></li>
+        </ul>
+    </div>
+
+{% endif %}
+
+<div id="elementshowbox" {% if count != 1 %} style="top: 20%;height: 70%" {% endif %}>
+
+    {% if confirmDelete %}
+        <p style="padding-left:2%;">{{ confirmDelete }} {% if checkError == false %} <a style="padding-left:2%;" href="{{ path('app_undoproject', {libelle : libelle, datedebut : datedebut|date('d/m/Y'), datefin : datefin|date('d/m/Y'), budget : budget|number_format(2), couts : couts|number_format(2)}) }}"> annuler </a> {% endif %}</p>
+    {% endif %}
+    {% if undolibelle %}
+    <p style="padding-left:2%;">Le projet <span style="color: brown;"> {{ undolibelle }} </span> a été restauré</p>
+    {% endif %}
+
+    <ul style="list-style: none;">
+        {% for projet in projets %}
+            {% if projet|length <= 0 %}
+                <p>Aucun projet créé, appuyez sur le bouton <span style="color: darkgreen;">Créer un projet</span></p>
+            {% else %}
+                <li style='border-radius:10px;display:block;padding:2%;border:2px;border-color:black;border-style:solid;background-color:lightgrey;'
+                <p>{{ projet.libelle }} <a style="position: absolute;left:30%;" href="">gérer les couts</a> <a style="position: absolute; right:5%;" href="{# {{ path('app_projectadduser') }} #}">Ajouter des utilisateurs au projet</a> </p>
+
+                <p> date de début : {{ projet.datedebut|date('d/m/Y') }} </p>
+
+                {% if projet.datefin %}
+                    date de fin : {{ projet.datefin|date('d/m/Y') }}
+                {% endif %} 
+
+
+                <a href="{{ path('app_newtask', {projetid: projet.id}) }}"
+                style="right: 60%;position: absolute">ajouter une tâche</a>
+
+                <a href="{{ path('app_editproject', {projetid: projet.id,projetlibelle: projet.libelle}) }}" 
+                style="right: 35%;position: absolute">modifier ce projet</a>
+
+                <a href="{{ path('app_removeproject', {projetid: projet.id}) }}"
+                style="right: 20%;position: absolute">archiver ce projet</a>
+
+                <a href="{{ path('app_removeproject', {projetid: projet.id}) }}"
+                style="right: 5%;position: absolute">supprimer ce projet</a></li>
+
+
+                {% for tache in projet.tache %}
+
+                    <li style="background-color:white;border-radius:50px;display:block;padding-left:10%;border:2px;border-color:black;border-style:solid;" 
+                    <p>{{ tache.libelle }} <span style="position: absolute; right:40%;font-size: 14pt;border-style: solid;" > Statut : {{ tache.statut }} </span> <a style="position: absolute; right:5%;" href="{# {{ path('app_taskadduser') }} #}">Ajouter des utilisateurs à la tâche</a> </p>
+                    <p> date de début : {{ tache.datedebut|date('d/m/Y') }}</p>
+
+                    {% if tache.datefin %}
+                        <p> date de fin : {{ tache.datefin|date('d/m/Y') }}
+                    {% endif %}
+
+                    <a style="left: 40%;position: absolute" href="">ajouter une sous tâche</a>
+                    <a style="right: 20%;position: absolute" href="{{ path('app_edittask', {tacheid: tache.id}) }}">modifier tâche</a>
+                    <a style="right: 5%;position: absolute" href="{{ path('app_removetask', {tacheid: tache.id}) }}">supprimer tâche</a></p></li>
+
+                {% endfor %}
+
+            {% endif %}
+        {% endfor %}
+    </ul>
+</div>
+
+{% endblock %}
