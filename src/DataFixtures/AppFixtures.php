@@ -10,9 +10,13 @@ class AppFixtures extends Fixture
 {
     public function load(ObjectManager $manager): void
     {
-        $product = new Projet();
-        $manager->persist($product);
-
+        for($i=0; $i < 10; $i++)
+        {
+        $projet = new Projet();
+        $projet->setLibelle('projet' .$i);
+        $manager->persist($projet);
+        }
+        
         $manager->flush();
     }
 }
