@@ -1,20 +1,37 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello ArchivesController!{% endblock %}
+{% block title %}STEP : Gestion Projets/Archives{% endblock %}
+
+{% set count = 0 %}
+    {% for role in app.user.roles %}
+        {% if role == 'ROLE_GESTION' or role == 'ROLE_ADMIN' %}
+            {% set count = 1 %}
+        {% endif %}
+    {% endfor %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
+<div id="topbar">
 
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ '/home/step19/Bureau/Webapp Gestion Projets/app_gestion_projet/src/Controller/ArchivesController.php'|file_link(0) }}">src/Controller/ArchivesController.php</a></code></li>
-        <li>Your template at <code><a href="{{ '/home/step19/Bureau/Webapp Gestion Projets/app_gestion_projet/templates/archives/index.html.twig'|file_link(0) }}">templates/archives/index.html.twig</a></code></li>
-    </ul>
+    <span id="logo"><a href="{{ path('app_projets') }}"><img src="https://step.eco/wp-content/uploads/2021/11/Logo-bleu-STEP-RVB-300x128.png" alt="Logo de Step"></a></span>
+    <span id="userinfo">
+        
+        <p>{% if count == 1 %}
+            Connecté en tant que gestionnaire 
+            {% else %} 
+            Connecté en tant qu'utilisateur
+            {% endif %}
+        </p>
+    </span>
+
+    <span id="righttopbar"><a id="deconnect" href="{{ path('app_logout') }}">Se déconnecter</a><a href="{# {{ path('app_setting') }} #}"><img style="width:20%; position: absolute; padding-left:45%" src="{{ asset('build/gear-solid.png') }}" alt="White Gear"></a></span>
+</div>
+
+<div id="elementshowbox" style="top: 20%;height: 70%">
+    {% for archive in archives %}
+        <ul style="list-style: none;">
+            <li style='border-radius:10px;display:block;padding:2%;border:2px;border-color:black;border-style:solid;background-color:lightgrey;'>libellé : {{ archive.libelle }}</li>
+        </ul>
+    {% endfor %}
 </div>
 {% endblock %}
