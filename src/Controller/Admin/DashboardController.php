@@ -11,7 +11,6 @@ use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 use App\Entity\User;
 use App\Entity\Projet;
 use App\Entity\Tache;
-use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 class DashboardController extends AbstractDashboardController
 {
