@@ -39,6 +39,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\ManyToMany(targetEntity: Tache::class, inversedBy: 'users')]
     private $tache;
 
+    #[ORM\ManyToOne(targetEntity: Projet::class, inversedBy: 'gestionnaires')]
+    private $projetgestionnaire;
+
     public function __construct()
     {
         $this->projet = new ArrayCollection();
@@ -188,6 +191,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function removeTache(Tache $tache): self
     {
         $this->tache->removeElement($tache);
+
+        return $this;
+    }
+
+    public function getProjetgestionnaire(): ?Projet
+    {
+        return $this->projetgestionnaire;
+    }
+
+    public function setProjetgestionnaire(?Projet $projetgestionnaire): self
+    {
+        $this->projetgestionnaire = $projetgestionnaire;
 
         return $this;
     }

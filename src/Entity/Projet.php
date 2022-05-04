@@ -36,10 +36,14 @@ class Projet
     #[ORM\OneToMany(mappedBy: 'projet', targetEntity: Tache::class)]
     private $tache;
 
+    #[ORM\OneToMany(mappedBy: 'projetgestionnaire', targetEntity: User::class)]
+    private $gestionnaires;
+
     public function __construct()
     {
         $this->users = new ArrayCollection();
         $this->tache = new ArrayCollection();
+        $this->gestionnaires = new ArrayCollection();
     }
 
     public function __toString()
@@ -163,6 +167,36 @@ class Projet
             // set the owning side to null (unless already changed)
             if ($tache->getProjet() === $this) {
                 $tache->setProjet(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, User>
+     */
+    public function getGestionnaires(): Collection
+    {
+        return $this->gestionnaires;
+    }
+
+    public function addGestionnaire(User $gestionnaire): self
+    {
+        if (!$this->gestionnaires->contains($gestionnaire)) {
+            $this->gestionnaires[] = $gestionnaire;
+            $gestionnaire->setProjetgestionnaire($this);
+        }
+
+        return $this;
+    }
+
+    public function removeGestionnaire(User $gestionnaire): self
+    {
+        if ($this->gestionnaires->removeElement($gestionnaire)) {
+            // set the owning side to null (unless already changed)
+            if ($gestionnaire->getProjetgestionnaire() === $this) {
+                $gestionnaire->setProjetgestionnaire(null);
             }
         }
 

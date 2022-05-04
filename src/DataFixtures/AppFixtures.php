@@ -51,7 +51,7 @@ class AppFixtures extends Fixture
             ->setPassword($this->hash->hashPassword($userGestionnaire,$i));
             $manager->persist($userGestionnaire);
             $manager->flush();
-        } 
+        }
 
         # Utilisateurs
         for($i = 0; $i < 20; $i++)
