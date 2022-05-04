@@ -36,7 +36,9 @@ class AppFixtures extends Fixture
         ->setNom('admin')
         ->setPrenom('admin')
         ->setUsername('admin')
-        ->setPassword($this->hash->hashPassword($userAdmin,'admin')); # Password : admin
+        ->setPassword($this->hash->hashPassword($userAdmin,'admin')) # Password : admin
+        ->setSettinginterfacetype('default_view')
+        ->setSettingtheme('default_theme');
         $manager->persist($userAdmin);
         $manager->flush();
 
@@ -48,7 +50,9 @@ class AppFixtures extends Fixture
             ->setNom('nomGestionnaire'.$i)
             ->setPrenom('prenomGestionnaire'.$i)
             ->setUsername('gestionnaire'.$i)
-            ->setPassword($this->hash->hashPassword($userGestionnaire,$i));
+            ->setPassword($this->hash->hashPassword($userGestionnaire,$i))
+            ->setSettinginterfacetype('default_view')
+            ->setSettingtheme('default_theme');
             $manager->persist($userGestionnaire);
             $manager->flush();
         }
@@ -61,7 +65,9 @@ class AppFixtures extends Fixture
             ->setNom('nom'.$i)
             ->setPrenom('prenom'.$i)
             ->setUsername('utilisateur'.$i)
-            ->setPassword($this->hash->hashPassword($user,$i));
+            ->setPassword($this->hash->hashPassword($user,$i))
+            ->setSettinginterfacetype('default_view')
+            ->setSettingtheme('default_theme');
             $manager->persist($user);
             $manager->flush();
         }    

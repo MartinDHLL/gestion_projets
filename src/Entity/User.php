@@ -42,6 +42,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\ManyToOne(targetEntity: Projet::class, inversedBy: 'gestionnaires')]
     private $projetgestionnaire;
 
+    #[ORM\Column(type: 'string', length: 255)]
+    private $settingtheme;
+
+    #[ORM\Column(type: 'string', length: 255)]
+    private $settinginterfacetype;
+
     public function __construct()
     {
         $this->projet = new ArrayCollection();
@@ -203,6 +209,30 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setProjetgestionnaire(?Projet $projetgestionnaire): self
     {
         $this->projetgestionnaire = $projetgestionnaire;
+
+        return $this;
+    }
+
+    public function getSettingtheme(): ?string
+    {
+        return $this->settingtheme;
+    }
+
+    public function setSettingtheme(string $settingtheme): self
+    {
+        $this->settingtheme = $settingtheme;
+
+        return $this;
+    }
+
+    public function getSettinginterfacetype(): ?string
+    {
+        return $this->settinginterfacetype;
+    }
+
+    public function setSettinginterfacetype(string $settinginterfacetype): self
+    {
+        $this->settinginterfacetype = $settinginterfacetype;
 
         return $this;
     }
