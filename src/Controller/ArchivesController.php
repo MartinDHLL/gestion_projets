@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Archive;
 use App\Entity\Projet;
 use App\Repository\ArchiveRepository;
+use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -38,10 +39,19 @@ class ArchivesController extends AbstractController
         ->setBudget($projet->getBudget())
         ->setCouts($projet->getCouts());
 
+        try
+        {
+            $em->remove($projet);
+            $em->flush();
+        }
+        catch(ForeignKeyConstraintViolationException $e)
+        {
+            return $this->redirectToRoute('app_projets' , ['confirmDelete'=> 'Il reste des taches associés au projet', 'checkError' => $e]);
+        }
+
         $em->persist($archive);
         $em->flush();
-
-        $em->remove($projet);
+        
         
         return $this->redirectToRoute('app_projets');
     }
