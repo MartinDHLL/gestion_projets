@@ -2,6 +2,13 @@
 
 {% block title %}STEP : Gestion Projets{% endblock %}
 
+{% set count = 0 %}
+        {% for role in app.user.roles %}
+            {% if role == 'ROLE_GESTION' or role == 'ROLE_ADMIN' %}
+                {% set count = 1 %}
+            {% endif %}
+        {% endfor %}
+
 {% block body %}
 <style>
 
@@ -30,13 +37,6 @@
     <span id="logo"><a href="{{ path('app_projets') }}"><img src="https://step.eco/wp-content/uploads/2021/11/Logo-bleu-STEP-RVB-300x128.png" alt="Logo de Step"></a></span>
     <span id="userinfo">
         
-        {% set count = 0 %}
-        {% for role in app.user.roles %}
-            {% if role == 'ROLE_GESTION' or role == 'ROLE_ADMIN' %}
-                {% set count = 1 %}
-            {% endif %}
-        {% endfor %}
-        
         <p>{% if count == 1 %}
             Connecté en tant que gestionnaire 
             {% else %} 
@@ -44,7 +44,7 @@
             {% endif %}</p>
     </span>
 
-    <span id="deconnexion"><a id="deconnect" href="{{ path('app_logout') }}">Se déconnecter</a></span>
+    <span id="righttopbar"><a id="deconnect" href="{{ path('app_logout') }}">Se déconnecter</a><a href="{# {{ path('app_setting') }} #}"><img style="width:20%; position: absolute; padding-left:45%" src="{{ asset('build/gear-solid.png') }}" alt="White Gear"></a></span>
 </div>
 
 {% if count == 1 %}
@@ -88,7 +88,7 @@
                 <a href="{{ path('app_editproject', {projetid: projet.id,projetlibelle: projet.libelle}) }}" 
                 style="right: 35%;position: absolute">modifier ce projet</a>
 
-                <a href="{{ path('app_removeproject', {projetid: projet.id}) }}"
+                <a href="{{ path('app_makearchive', {projetid: projet.id}) }}"
                 style="right: 20%;position: absolute">archiver ce projet</a>
 
                 <a href="{{ path('app_removeproject', {projetid: projet.id}) }}"
