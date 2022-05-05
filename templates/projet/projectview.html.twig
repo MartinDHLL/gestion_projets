@@ -58,7 +58,16 @@
 <div id="topbar">
 
     <span id="logo"><a href="{{ path('app_projets') }}"><img src="https://step.eco/wp-content/uploads/2021/11/Logo-bleu-STEP-RVB-300x128.png" alt="Logo de Step"></a></span>
-    <span id="userinfo">
+
+    <span id="projectinfo">
+        <p>Projet : <span style="color: aqua;">{{ projet.libelle }}</span> Budget : <span style="color: aqua;">{{ projet.budget }}</span> Couts total : {{ projet.couts }}
+            <br> <ul class="alignlist">
+                {% if count == 1 %}<li><a style="background-color: aliceblue;" href="{{ path('app_projectadduser', {projetid :projet.id}) }}">Ajouter Utilisateurs</a></li>{% endif %}
+                {% for user in projet.users %}
+                <li>{{ user.prenom }} {{ user.nom }},</li>
+            {% endfor %}</ul>
+        </p>
+    </span>
         
         <p>{% if count == 1 %}
             Connecté en tant que gestionnaire 
@@ -72,11 +81,12 @@
 
  <div id="buttonsbox">
     <ul class="alignlist">
+        <li class="button" style="background-color: unset;padding-right:4%;"><a class="removeunderline" href="{{ path('app_projets') }}"><img style="width: 4%;" src="{{ asset('build/angle-left-solid.svg') }}" alt="flèche retour"></a></li>
         <li class="button"><a class="removeunderline" href="{{ path('app_newtask', {projetid : projet.id}) }}">Créer une tâche<span class="plustext">+</span></a></li>
     </ul>
 </div>
 
-<div id="elementshowbox"">
+<div id="elementshowbox">
 
     <ul style="list-style: none;">
 
@@ -91,8 +101,10 @@
                     {% endif %}
 
                     <a style="left: 40%;position: absolute" href="">ajouter une sous tâche</a>
-                    <a style="right: 20%;position: absolute" href="{{ path('app_edittask', {tacheid: tache.id}) }}">modifier tâche</a>
-                    <a style="right: 5%;position: absolute" href="{{ path('app_removetask', {tacheid: tache.id}) }}">supprimer tâche</a></p></li>
+                    <a style="right: 20%;position: absolute" href="{{ path('app_edittask', {tacheid: tache.id, projetid: projet.id}) }}">modifier tâche</a>
+                    <a style="right: 5%;position: absolute" href="{{ path('app_removetask', {tacheid: tache.id, projetid: projet.id}) }}">supprimer tâche</a></p></li>
+
+                    <li></li>
 
                 {% endfor %}
     </ul>

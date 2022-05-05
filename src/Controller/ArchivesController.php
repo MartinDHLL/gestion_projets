@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Archive;
 use App\Entity\Projet;
+use App\Entity\User;
 use App\Repository\ArchiveRepository;
 use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
 use Doctrine\Persistence\ManagerRegistry;
@@ -11,6 +12,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 class ArchivesController extends AbstractController
 {
@@ -25,11 +27,12 @@ class ArchivesController extends AbstractController
     }
 
     #[Route('/archives/make', name: 'app_makearchive')]
-    public function makeArchive(Request $request, ManagerRegistry $managerRegistry): Response
+    public function makeArchive(Request $request, ManagerRegistry $managerRegistry, UserInterface $currentuser): Response
     {
         $projetid = $request->get('projetid');
         $em = $managerRegistry->getManager();
         $projet = $em->getRepository(Projet::class)->find($projetid);
+        $user = $em->getRepository(User::class)->find($currentuser);
 
         $archive = new Archive;
 
@@ -38,6 +41,7 @@ class ArchivesController extends AbstractController
         ->setDatefin($projet->getDateFin())
         ->setBudget($projet->getBudget())
         ->setCouts($projet->getCouts());
+        $projet->removeGestionnaire($user);
 
         try
         {

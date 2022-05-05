@@ -35,7 +35,18 @@
 
 <a href="{{ path('app_projets') }}">Retour</a>
 
+{% if useredit == true %}
+    <p>Participants au projets :</p>
+    <ul class="alignlist">
+    {% for user in projet.users %}
+        <li>{{ user.prenom }} {{ user.nom }}, </li>
+    {% endfor %} 
+    </ul>
+{% endif %}
+
+{% if useredit == false %}
 <p>Editer le projet <span style="color: rgb(105, 87, 6);"> {{ projet }} </span></p>
+{% endif %}
 
 {{ form(form) }}
 

@@ -66,9 +66,10 @@
 
 {% if count == 1 %}
 
-    <div id="buttonsbox">
+    <div id="buttonsbox" style="width:40%">
         <ul class="alignlist">
             <li class="button"><a class="removeunderline" href="{{ path('app_newproject') }}">Créer un projet<span class="plustext">+</span></a></li>
+            <li style="padding: 5%;"></li>
             <li class="button"><a class="removeunderline" href="{{ path('app_archives') }}">Consulter les archives</a></li>
         </ul>
     </div>
@@ -109,6 +110,9 @@
 
                 <a href="{{ path('app_removeproject', {projetid: projet.id}) }}"
                 style="right: 5%;position: absolute">supprimer ce projet</a></li>
+
+                <li style="padding: 1%;"></li>
+
                 {% endif %}
 
             {% endif %}
@@ -125,7 +129,7 @@
                 <p>Aucun projet créé, appuyez sur le bouton <span style="color: darkgreen;">Créer un projet</span></p>
             {% else %}
                 <li style='border-radius:10px;display:block;padding:2%;border:2px;border-color:black;border-style:solid;background-color:lightgrey;'
-                <p>{{ projet.libelle }} <a style="position: absolute;left:30%;" href="">gérer les couts</a> <a style="position: absolute; right:5%;" href="{# {{ path('app_projectadduser') }} #}">Ajouter des utilisateurs au projet</a> </p>
+                <p>{{ projet.libelle }} <a style="position: absolute;left:30%;" href="">gérer les couts</a> <a style="position: absolute; right:5%;" href="{{ path('app_projectadduser', {projetid :projet.id}) }}">Ajouter des utilisateurs au projet</a> </p>
 
                 <p> date de début : {{ projet.datedebut|date('d/m/Y') }} </p>
 

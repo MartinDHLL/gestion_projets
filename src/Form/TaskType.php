@@ -18,13 +18,14 @@ class TaskType extends AbstractType
             ->add('libelle')
             ->add('datedebut', DateType::class, ['label' => 'date de début'])
             ->add('datefin', DateType::class, ['label' => 'date de fin'])
-            ->add('statut', ChoiceType::class, ['label' => "Statut : ",
-            'choices' => 
-                [
-                    'à faire' => 'à faire',
-                    'en cours' => 'en cours',
-                    'terminé' => 'terminé'
-                ]
+            ->add('statut', ChoiceType::class, 
+                ['label' => "Statut : ",
+                'choices' => 
+                    [
+                        'à faire' => 'à faire',
+                        'en cours' => 'en cours',
+                        'terminé' => 'terminé'
+                    ]
                 ])
             ->add('submit',SubmitType::class)
             ->getForm()

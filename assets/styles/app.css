@@ -39,6 +39,12 @@ span#userinfo {
     color: aliceblue;
 }
 
+span#projectinfo {
+    position: absolute;
+    padding-left: 20%;
+    color: aliceblue;
+}
+
 span#righttopbar {
     position: absolute;
     right: 10%; top: 35%;

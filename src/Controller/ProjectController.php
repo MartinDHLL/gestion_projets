@@ -10,8 +10,10 @@ use Symfony\Component\Routing\Annotation\Route;
 use Doctrine\Persistence\ManagerRegistry;
 use App\Entity\Projet;
 use App\Entity\User;
+use App\Form\UserType;
 use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
 use Symfony\Component\Security\Core\User\UserInterface;
+
 
 class ProjectController extends AbstractController
 {
@@ -54,6 +56,7 @@ class ProjectController extends AbstractController
     #[Route('/projets/modifier', name: 'app_editproject')]
     public function EditProject(Request $request, ManagerRegistry $managerRegistry): Response
     {
+        $useredit = false;
         $projetlibelle = $request->get('projetlibelle');
         $projetid = $request->get('projetid');
 
@@ -88,7 +91,8 @@ class ProjectController extends AbstractController
         return $this->renderForm('projet/editproject.html.twig', [
             'projet' => $projetlibelle,
             'form' => $form,
-            'projetid' => $projetid
+            'projetid' => $projetid,
+            'useredit' => $useredit
         ]);
     }
 
@@ -123,7 +127,7 @@ class ProjectController extends AbstractController
         }
 
         return $this->renderForm('projet/nouveauprojet.html.twig', [
-            'form' => $form
+            'form' => $form,
         ]);
     }
 
@@ -215,5 +219,31 @@ class ProjectController extends AbstractController
         ]);
     }
 
+    #[Route('/projets/ajoutUtilisateur', name: 'app_projectadduser')]
+    public function AddUser(Request $request, ManagerRegistry $managerRegistry): Response
+    {
+        $projetid = $request->get('projetid');
+        $useredit = true;
+        $em = $managerRegistry->getManager();
+        $projet = $em->getRepository(Projet::class)->find($projetid);
+
+        $form = $this->createForm(UserType::class);
+
+        $form->handleRequest($request);
+        
+        if($form->isSubmitted() && $form->isValid())
+        {
+            $projet->AddUser($form->get('users')->getData());
+            $em->persist($projet);
+            $em->flush();
+            return $this->redirectToRoute('app_projectview', ['projetid' => $projetid]);
+        }
+
+        return $this->renderForm('projet/editproject.html.twig', [
+            'form' => $form,
+            'projet' => $projet,
+            'useredit' => $useredit
+        ]);
+    }
     
 }

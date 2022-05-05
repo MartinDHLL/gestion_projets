@@ -6,24 +6,28 @@ namespace App\Controller;
 use App\Entity\Tache;
 use App\Form\TaskType;
 use App\Entity\Projet;
-
+use App\Entity\User;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 class TaskController extends AbstractController
 {
     #[Route('/projets/nouvelleTache', name: 'app_newtask')]
-    public function NewTask(Request $request, ManagerRegistry $managerRegistry): Response
-    {
+    public function NewTask(Request $request, ManagerRegistry $managerRegistry, UserInterface $currentuser): Response
+    { 
+
         $projetid = $request->get('projetid');
         
         $em = $managerRegistry->getManager();
 
         $projet = $em->getRepository(Projet::class)->find($projetid);
+
+        $usersetting = $em->getRepository(User::class)->find($currentuser)->getSettinginterfacetype();
 
         $tache = new Tache;
 
@@ -38,7 +42,14 @@ class TaskController extends AbstractController
             $em->flush();
             $tache->setProjet($projet);
             $em->flush();
-            return $this->redirectToRoute('app_projets');
+            if($usersetting != 'default_view')
+            {
+                return $this->redirectToRoute('app_projets');
+            }
+            else
+            {
+                return $this->redirectToRoute('app_projectview', ['projetid' => $projetid]);
+            }
         }
 
         return $this->renderForm('projet/nouveauprojet.html.twig', [
@@ -47,10 +58,11 @@ class TaskController extends AbstractController
     }
 
     #[Route('/projet/supprimerTache', name: 'app_removetask')]
-    public function RemoveTask(Request $request, ManagerRegistry $managerRegistry): Response
+    public function RemoveTask(Request $request, ManagerRegistry $managerRegistry, UserInterface $currentuser): Response
     {
         try 
         {
+        $projetid = $request->get('projetid');
         $tacheid = $request->get('tacheid');
 
         $em = $managerRegistry->getManager();
@@ -58,7 +70,16 @@ class TaskController extends AbstractController
         $em->remove($tache);
         $em->flush();
 
-        return $this->redirectToRoute('app_projets'/* , ['confirmDelete' => 'la tâche a bien été supprimé'] */);
+        $usersetting = $em->getRepository(User::class)->find($currentuser)->getSettinginterfacetype();
+        
+        if($usersetting != 'default_view')
+            {
+                return $this->redirectToRoute('app_projets');
+            }
+            else
+            {
+                return $this->redirectToRoute('app_projectview', ['projetid' => $projetid]);
+            }
         }
 
         catch(ForeignKeyConstraintViolationException $e)
@@ -70,14 +91,17 @@ class TaskController extends AbstractController
     }
 
     #[Route('/projet/modifierTache', name: 'app_edittask')]
-    public function EditTask(Request $request, ManagerRegistry $managerRegistry): Response
+    public function EditTask(Request $request, ManagerRegistry $managerRegistry, UserInterface $currentuser): Response
     {
 
         $tacheid = $request->get('tacheid');
+        $projetid = $request->get('projetid');
 
         $em = $managerRegistry->getManager();
 
         $tache = $em->getRepository(Tache::class)->find($tacheid);
+
+        $usersetting = $em->getRepository(User::class)->find($currentuser)->getSettinginterfacetype();
         
         if(!$tache)
         {
@@ -100,13 +124,25 @@ class TaskController extends AbstractController
 
             $em->flush();
 
-            return $this->redirectToRoute('app_projets');
+            if($usersetting != 'default_view')
+            {
+                return $this->redirectToRoute('app_projets');
+            }
+            else
+            {
+                return $this->redirectToRoute('app_projectview', ['projetid' => $projetid]);
+            }
         }
+    
         
         return $this->renderForm('edit_task/index.html.twig', [
             'form' => $form
         ]);
     }
 
-    
+    /* #[Route('/projet/nouvelleSousTache', name: 'app_makesubtask')]
+    public function MakeSubtask(): Response 
+    {
+
+    } */
 }
