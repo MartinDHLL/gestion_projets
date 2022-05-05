@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Projet;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -19,6 +20,7 @@ class ProjectType extends AbstractType
             ->add('datefin', DateType::class, ['label' => 'date de fin'])
             ->add('budget')
             ->add('couts')
+            /* ->add('utilisateurs', ChoiceType::class, ) */
             ->add('submit',SubmitType::class)
             ->getForm()
         ;

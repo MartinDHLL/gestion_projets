@@ -3,13 +3,31 @@
 {% block title %}STEP : Gestion Projets{% endblock %}
 
 {% set count = 0 %}
-        {% for role in app.user.roles %}
-            {% if role == 'ROLE_GESTION' or role == 'ROLE_ADMIN' %}
-                {% set count = 1 %}
-            {% endif %}
-        {% endfor %}
+{% for role in app.user.roles %}
+    {% if role == 'ROLE_GESTION' or role == 'ROLE_ADMIN' %}
+            {% set count = 1 %}
+    {% endif %}
+{% endfor %}
 
 {% block body %}
+
+{% if app.user.settingtheme == 'dark_theme' %}
+    <style>
+        body {
+            background-color: black;
+        }
+        div#topbar {
+            background-color: rgb(59, 55, 55);
+        }
+        div#elementshowbox {
+            background-color: rgb(59, 55, 55);
+        }
+        div#buttonsbox {
+            background-color: rgb(59, 55, 55);
+        }
+    </style>
+{% endif %}
+
 <style>
 
     li.button {
@@ -26,7 +44,6 @@
         
     }
 
-    
 
 </style>
 
@@ -67,6 +84,41 @@
     <p style="padding-left:2%;">Le projet <span style="color: brown;"> {{ undolibelle }} </span> a été restauré</p>
     {% endif %}
 
+    {% if app.user.settinginterfacetype == 'default_view' %}
+
+    <ul style="list-style: none;">
+        {% for projet in projets %}
+            {% if projet|length <= 0 %}
+                <p>Aucun projet créé, appuyez sur le bouton <span style="color: darkgreen;">Créer un projet</span></p>
+            {% else %}
+                <li style='border-radius:10px;display:block;padding:2%;border:2px;border-color:black;border-style:solid;background-color:lightgrey;'
+                <p>{{ projet.libelle }} <a href="{{ path('app_projectview', {projetid : projet.id}) }}"><img style="width: 5%;position:relative;padding-left:80%;" src="{{ asset('build/arrow-right-to-bracket-solid.png') }}" alt=""></a></p>
+
+                <p> date de début : {{ projet.datedebut|date('d/m/Y') }} </p>
+
+                {% if projet.datefin %}
+                    date de fin : {{ projet.datefin|date('d/m/Y') }}
+                {% endif %} 
+
+                {% if count == 1 %}
+                <a href="{{ path('app_editproject', {projetid: projet.id,projetlibelle: projet.libelle}) }}" 
+                style="right: 35%;position: absolute">modifier ce projet</a>
+
+                <a href="{{ path('app_makearchive', {projetid: projet.id}) }}"
+                style="right: 20%;position: absolute">archiver ce projet</a>
+
+                <a href="{{ path('app_removeproject', {projetid: projet.id}) }}"
+                style="right: 5%;position: absolute">supprimer ce projet</a></li>
+                {% endif %}
+
+            {% endif %}
+        {% endfor %}
+    </ul>
+
+    {% endif %}
+
+    {% if app.user.settinginterfacetype == 'complete_view' %}
+
     <ul style="list-style: none;">
         {% for projet in projets %}
             {% if projet|length <= 0 %}
@@ -81,9 +133,10 @@
                     date de fin : {{ projet.datefin|date('d/m/Y') }}
                 {% endif %} 
 
-
                 <a href="{{ path('app_newtask', {projetid: projet.id}) }}"
                 style="right: 60%;position: absolute">ajouter une tâche</a>
+
+                {% if count == 1 %}
 
                 <a href="{{ path('app_editproject', {projetid: projet.id,projetlibelle: projet.libelle}) }}" 
                 style="right: 35%;position: absolute">modifier ce projet</a>
@@ -92,7 +145,9 @@
                 style="right: 20%;position: absolute">archiver ce projet</a>
 
                 <a href="{{ path('app_removeproject', {projetid: projet.id}) }}"
-                style="right: 5%;position: absolute">supprimer ce projet</a></li>
+                style="right: 5%;position: absolute">supprimer ce projet</a>
+
+                {% endif %} </li>
 
 
                 {% for tache in projet.tache %}
@@ -114,6 +169,9 @@
             {% endif %}
         {% endfor %}
     </ul>
+
+    {% endif %}
+    
 </div>
 
 {% endblock %}

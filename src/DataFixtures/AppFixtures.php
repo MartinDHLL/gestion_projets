@@ -21,14 +21,14 @@ class AppFixtures extends Fixture
     public function load(ObjectManager $manager): void
     {
         
-        for($i=1; $i < 11; $i++)
+        /* for($i=1; $i < 11; $i++)
         {
         $projet = new Projet();
         $projet->setLibelle('projet' .$i);
         $projet->setDatedebut(new \DateTime('now'));
         $manager->persist($projet);
         $manager->flush();
-        }
+        } */
         
         # Utilisateur Admin
         $userAdmin = new User();

@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use App\Repository\ProjetRepository;
 use App\Form\ProjectType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -10,27 +9,31 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Doctrine\Persistence\ManagerRegistry;
 use App\Entity\Projet;
+use App\Entity\User;
 use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 class ProjectController extends AbstractController
 {
     #[Route('/projets', name: 'app_projets')]
-    public function index(ProjetRepository $projetRepository, Request $request): Response
+    public function index(Request $request, ManagerRegistry $managerRegistry, UserInterface $currentuser): Response
     {   
         $confirmDelete = $request->get('confirmDelete');
         $checkError = $request->get('checkError');
 
-        # Dans le cadre d'un Undo de la suppression d'un projet, on récupère les anciennes valeurs pour recréer le projet sous un autre ID
         $oldLibelle = $request->get('oldlibelle');
         $oldDateDebut = $request->get('olddatedebut');
         $oldDateFin = $request->get('olddatefin');
         $oldBudget = $request->get('oldbudget');
         $oldCouts = $request->get('oldcouts');
         $undoLibelle = $request->get('undolibelle');
-        # Variable à intégrer dès que l'insertion d'utilisateurs à un projet fonctionne
-        # $oldusers = $request->get('oldattribution'); 
 
-        $projets = $projetRepository->findAll();
+        $em = $managerRegistry->getManager();
+        $user = $em->getRepository(User::class)->findOneBy(array('username' => $currentuser->getUserIdentifier()));
+
+        $projets = $user->getProjet();
+        
+        /* dd($projets); */
         
         $typeutilisateur = 'gestionnaire';
         return $this->render('projet/projet.html.twig', [
@@ -90,11 +93,12 @@ class ProjectController extends AbstractController
     }
 
     #[Route('/projets/nouveauProjet', name: 'app_newproject')]
-    public function NewProject(Request $request, ManagerRegistry $managerRegistry): Response
+    public function NewProject(Request $request, ManagerRegistry $managerRegistry, UserInterface $currentuser): Response
     {
         $em = $managerRegistry->getManager();
 
         $projet = new Projet;
+        $user = $em->getRepository(User::class)->findOneBy(array('username' => $currentuser->getUserIdentifier()));
 
         $form = $this->createForm(ProjectType::class, $projet);
 
@@ -103,8 +107,18 @@ class ProjectController extends AbstractController
         if($form->isSubmitted() && $form->isValid())
         {
             $projet = $form->getData();
-            $em->persist($projet);
-            $em->flush();
+            
+            if($user->getRoles() != 'ROLE_USER')
+            {
+                $user->addProjet($projet);
+                $em->persist($projet);
+                $em->flush();
+                $em->persist($user);
+                $em->flush();
+                $user->setProjetgestionnaire($projet);
+                $em->persist($user);
+                $em->flush();
+            }
             return $this->redirectToRoute('app_projets');
         }
 
@@ -114,7 +128,7 @@ class ProjectController extends AbstractController
     }
 
     #[Route('/projet/supprimerProjet', name: 'app_removeproject')]
-    public function DeleteProject(Request $request, ManagerRegistry $managerRegistry): Response
+    public function DeleteProject(Request $request, ManagerRegistry $managerRegistry, UserInterface $currentuser): Response
     {
         try 
         {
@@ -122,6 +136,9 @@ class ProjectController extends AbstractController
 
         $em = $managerRegistry->getManager();
         $projet = $em->getRepository(Projet::class)->find($projetid);
+        $user = $em->getRepository(User::class)->find($currentuser);
+
+        $projet->removeGestionnaire($user);
 
         $libelle = $projet->getLibelle();
         $dateDebut = $projet->getDatedebut();
@@ -152,7 +169,7 @@ class ProjectController extends AbstractController
     }
 
     #[Route('/projets/undo', name: 'app_undoproject')]
-    public function UndoProject(Request $request, ManagerRegistry $managerRegistry): Response
+    public function UndoProject(Request $request, ManagerRegistry $managerRegistry, UserInterface $currentuser): Response
     {
 
         $em = $managerRegistry->getManager();
@@ -161,7 +178,7 @@ class ProjectController extends AbstractController
         $dateFin = new \DateTime($request->get('datefin'));
         $budget = $request->get('budget');
         $couts = $request->get('couts');
-        /* dd($libelle, $dateDebut, $dateFin, $budget, $couts); */
+        $user = $em->getRepository(User::class)->find($currentuser);
 
         $projet = new Projet;
         $projet->setLibelle($libelle)
@@ -169,12 +186,33 @@ class ProjectController extends AbstractController
         ->setDatefin($dateFin)
         ->setBudget($budget)
         ->setCouts($couts);
-
         $em->persist($projet);
         $em->flush();
+        
+        if($user->getRoles() != 'ROLE_USER')
+            {
+                $user->addProjet($projet);
+                $em->persist($projet);
+                $em->flush();
+                $user->setProjetgestionnaire($projet);
+                $em->persist($user);
+                $em->flush();
+            }
 
 
         return $this->redirectToRoute('app_projets', ['undolibelle' => $libelle]);
+    }
+
+    #[Route('/projets/taches', name: 'app_projectview')]
+    public function ProjectView(Request $request, ManagerRegistry $managerRegistry): Response
+    {
+        $projetid = $request->get('projetid');
+        
+        $em = $managerRegistry->getManager();
+        $projet = $em->getRepository(projet::class)->find($projetid);
+        return $this->render('/projet/projectview.html.twig', [
+            'projet' => $projet
+        ]);
     }
 
     
