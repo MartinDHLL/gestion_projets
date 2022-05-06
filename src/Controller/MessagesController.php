@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Message;
 use App\Entity\MessageSignalementAdmin;
 use App\Entity\Projet;
 use App\Entity\User;
@@ -53,8 +54,12 @@ class MessagesController extends AbstractController
         $em = $managerRegistry->getManager();
         $projet = $em->getRepository(Projet::class)->find($projetid);
 
+        $messagesprojet = $em->getRepository(Message::class)->findBy(['projet' => $projet]);
+
+        dd($messagesprojet);
+
         return $this->renderForm('messagerie.html.twig', [
-            
+            'messages' => $messagesprojet
         ]);
     }
     
