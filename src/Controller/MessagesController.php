@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\MessageSignalementAdmin;
+use App\Entity\Projet;
 use App\Entity\User;
 use App\Form\SignalementType;
 use Doctrine\Persistence\ManagerRegistry;
@@ -45,8 +46,13 @@ class MessagesController extends AbstractController
     
     
     #[Route('/projet/messagerie', name: 'app_messagerie')]
-    public function showMessagerie(): Response 
+    public function showMessagerie(Request $request ,ManagerRegistry $managerRegistry): Response 
     {
+        $projetid = $request->get('projetid');
+
+        $em = $managerRegistry->getManager();
+        $projet = $em->getRepository(Projet::class)->find($projetid);
+
         return $this->renderForm('messagerie.html.twig', [
             
         ]);
