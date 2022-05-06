@@ -15,7 +15,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 class MessagesController extends AbstractController
 {
     #[Route('/signalementProbleme', name: 'sendproblemtoadmin')]
-    public function SendMessage(Request $request, UserInterface $currentuser, ManagerRegistry $managerRegistry): Response
+    public function SendSignalementMessageToAdmin(Request $request, UserInterface $currentuser, ManagerRegistry $managerRegistry): Response
     {
         $em = $managerRegistry->getManager();
         $user = $em->getRepository(User::class)->find($currentuser);
@@ -42,4 +42,7 @@ class MessagesController extends AbstractController
             'form' => $form
         ]);
     }
+    
+    /* #[Route('/projet/messagerie', name: 'sendproblemtoadmin')]
+    public function showMessagerie(): Response */
 }

@@ -51,6 +51,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: MessageSignalementAdmin::class)]
     private $messageSignalementAdmins;
 
+    #[ORM\ManyToOne(targetEntity: Message::class, inversedBy: 'confirmationlecture')]
+    private $confirmationlecturemessage;
+
     public function __construct()
     {
         $this->projet = new ArrayCollection();
@@ -267,6 +270,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
                 $messageSignalementAdmin->setUser(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getConfirmationlecturemessage(): ?Message
+    {
+        return $this->confirmationlecturemessage;
+    }
+
+    public function setConfirmationlecturemessage(?Message $confirmationlecturemessage): self
+    {
+        $this->confirmationlecturemessage = $confirmationlecturemessage;
 
         return $this;
     }
