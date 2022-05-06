@@ -43,6 +43,11 @@ class MessagesController extends AbstractController
         ]);
     }
     
-    /* #[Route('/projet/messagerie', name: 'sendproblemtoadmin')]
-    public function showMessagerie(): Response */
+    
+    #[Route('/projet/messagerie', name: 'app_messagerie')]
+    public function showMessagerie(): Response 
+    {
+        
+    }
+    
 }

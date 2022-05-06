@@ -16,59 +16,51 @@ class Message
     private $id;
 
     #[ORM\Column(type: 'text')]
-    private $corp;
+    private $corps;
 
-    #[ORM\OneToMany(mappedBy: 'confirmationlecturemessage', targetEntity: User::class)]
-    private $confirmationlecture;
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'message')]
+    private $user;
 
-    public function __construct()
-    {
-        $this->confirmationlecture = new ArrayCollection();
-    }
+    #[ORM\ManyToOne(targetEntity: Projet::class, inversedBy: 'messages')]
+    private $projet;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getCorp(): ?string
+    public function getCorps(): ?string
     {
-        return $this->corp;
+        return $this->corps;
     }
 
-    public function setCorp(string $corp): self
+    public function setCorps(string $corps): self
     {
-        $this->corp = $corp;
+        $this->corps = $corps;
 
         return $this;
     }
 
-    /**
-     * @return Collection<int, User>
-     */
-    public function getConfirmationlecture(): Collection
+    public function getUser(): ?User
     {
-        return $this->confirmationlecture;
+        return $this->user;
     }
 
-    public function addConfirmationlecture(User $confirmationlecture): self
+    public function setUser(?User $user): self
     {
-        if (!$this->confirmationlecture->contains($confirmationlecture)) {
-            $this->confirmationlecture[] = $confirmationlecture;
-            $confirmationlecture->setConfirmationlecturemessage($this);
-        }
+        $this->user = $user;
 
         return $this;
     }
 
-    public function removeConfirmationlecture(User $confirmationlecture): self
+    public function getProjet(): ?Projet
     {
-        if ($this->confirmationlecture->removeElement($confirmationlecture)) {
-            // set the owning side to null (unless already changed)
-            if ($confirmationlecture->getConfirmationlecturemessage() === $this) {
-                $confirmationlecture->setConfirmationlecturemessage(null);
-            }
-        }
+        return $this->projet;
+    }
+
+    public function setProjet(?Projet $projet): self
+    {
+        $this->projet = $projet;
 
         return $this;
     }

@@ -51,14 +51,19 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: MessageSignalementAdmin::class)]
     private $messageSignalementAdmins;
 
-    #[ORM\ManyToOne(targetEntity: Message::class, inversedBy: 'confirmationlecture')]
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Message::class)]
+    private $message;
+
+    #[ORM\Column(type: 'boolean', nullable: true)]
     private $confirmationlecturemessage;
+    
 
     public function __construct()
     {
         $this->projet = new ArrayCollection();
         $this->tache = new ArrayCollection();
         $this->messageSignalementAdmins = new ArrayCollection();
+        $this->message = new ArrayCollection();
     }
 
     public function __toString()
@@ -274,15 +279,46 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getConfirmationlecturemessage(): ?Message
+    /**
+     * @return Collection<int, Message>
+     */
+    public function getMessage(): Collection
+    {
+        return $this->message;
+    }
+
+    public function addMessage(Message $message): self
+    {
+        if (!$this->message->contains($message)) {
+            $this->message[] = $message;
+            $message->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMessage(Message $message): self
+    {
+        if ($this->message->removeElement($message)) {
+            // set the owning side to null (unless already changed)
+            if ($message->getUser() === $this) {
+                $message->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getConfirmationlecturemessage(): ?bool
     {
         return $this->confirmationlecturemessage;
     }
 
-    public function setConfirmationlecturemessage(?Message $confirmationlecturemessage): self
+    public function setConfirmationlecturemessage(?bool $confirmationlecturemessage): self
     {
         $this->confirmationlecturemessage = $confirmationlecturemessage;
 
         return $this;
     }
+
 }

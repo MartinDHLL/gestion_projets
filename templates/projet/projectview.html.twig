@@ -84,7 +84,7 @@
         <li class="button" style="background-color: unset;padding-right:20%;"><a class="removeunderline" href="{{ path('app_projets') }}"><img style="width: 4%; position:absolute" src="{{ asset('build/angle-left-solid.svg') }}" alt="flèche retour"></a></li>
         <li class="button" style="padding: 1%;"><a class="removeunderline" href="{{ path('app_newtask', {projetid : projet.id}) }}">Créer une tâche<span class="plustext">+</span></a></li>
         <li></li>
-        <li class="button" style="background-color: unset;padding-left:20%;"><a class="removeunderline" href="{{ path('app_projets') }}"><img style="width: 8%;" src="{{ asset('build/comment-solid.svg') }}" alt="icone messagerie"></a><span style="color: red;">4{# {{ nbmessagenonlus }} #}</span></li>
+        <li class="button" style="background-color: unset;padding-left:20%;"><a class="removeunderline" href="{{ path('app_projets') }}"><img style="width: 8%;" src="{{ asset('build/comment-solid.svg') }}" alt="icone messagerie"></a>{% if app.user.confirmationlecturemessage == true %}<span style="color: red;">!</span>{% endif %}</li>
     </ul>
 </div>
 
