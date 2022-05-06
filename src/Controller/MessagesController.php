@@ -38,7 +38,7 @@ class MessagesController extends AbstractController
             return $this->redirectToRoute('app_projets');
         }
 
-        return $this->renderForm('messages/index.html.twig', [
+        return $this->renderForm('sendadminmessage.html.twig', [
             'form' => $form
         ]);
     }
@@ -47,7 +47,9 @@ class MessagesController extends AbstractController
     #[Route('/projet/messagerie', name: 'app_messagerie')]
     public function showMessagerie(): Response 
     {
-        
+        return $this->renderForm('messagerie.html.twig', [
+            
+        ]);
     }
     
 }
