@@ -217,7 +217,7 @@ class TaskController extends AbstractController
 
         return $this->renderForm('edit_task/index.html.twig',[
             'form' => $form,
-            'projet' => $projet
+            'projet' => $projetid
         ]);
     }
 
