@@ -48,10 +48,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'string', length: 255)]
     private $settinginterfacetype;
 
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: MessageSignalementAdmin::class)]
+    private $messageSignalementAdmins;
+
     public function __construct()
     {
         $this->projet = new ArrayCollection();
         $this->tache = new ArrayCollection();
+        $this->messageSignalementAdmins = new ArrayCollection();
     }
 
     public function __toString()
@@ -233,6 +237,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setSettinginterfacetype(string $settinginterfacetype): self
     {
         $this->settinginterfacetype = $settinginterfacetype;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, MessageSignalementAdmin>
+     */
+    public function getMessageSignalementAdmins(): Collection
+    {
+        return $this->messageSignalementAdmins;
+    }
+
+    public function addMessageSignalementAdmin(MessageSignalementAdmin $messageSignalementAdmin): self
+    {
+        if (!$this->messageSignalementAdmins->contains($messageSignalementAdmin)) {
+            $this->messageSignalementAdmins[] = $messageSignalementAdmin;
+            $messageSignalementAdmin->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMessageSignalementAdmin(MessageSignalementAdmin $messageSignalementAdmin): self
+    {
+        if ($this->messageSignalementAdmins->removeElement($messageSignalementAdmin)) {
+            // set the owning side to null (unless already changed)
+            if ($messageSignalementAdmin->getUser() === $this) {
+                $messageSignalementAdmin->setUser(null);
+            }
+        }
 
         return $this;
     }

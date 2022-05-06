@@ -2,6 +2,7 @@
 
 namespace App\Controller\Admin;
 
+use App\Entity\MessageSignalementAdmin;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
@@ -53,5 +54,6 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToRoute('Hash mots de passe', 'fa-solid fa-key', 'admin_userpasswordedit');
         yield MenuItem::linkToCrud('Gérer projets', 'fas fa-list', Projet::class);
         yield MenuItem::linkToCrud('Gérer taches', 'fas fa-list', Tache::class);
+        yield MenuItem::linkToCrud('Messages Signalement utilisateurs', 'fa-solid fa-comment', MessageSignalementAdmin::class);
     }
 }
