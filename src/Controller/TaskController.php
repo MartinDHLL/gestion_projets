@@ -6,7 +6,9 @@ namespace App\Controller;
 use App\Entity\Tache;
 use App\Form\TaskType;
 use App\Entity\Projet;
+use App\Entity\SousTache;
 use App\Entity\User;
+use App\Form\SubTaskType;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -140,9 +142,42 @@ class TaskController extends AbstractController
         ]);
     }
 
-    /* #[Route('/projet/nouvelleSousTache', name: 'app_newsubtask')]
-    public function MakeSubtask(): Response 
-    {
+    #[Route('/projet/nouvelleSousTache', name: 'app_newsubtask')]
+    public function MakeSubtask(Request $request, ManagerRegistry $managerRegistry, UserInterface $currentuser): Response 
+    {   
+        $em = $managerRegistry->getManager();
+        $usersetting = $em->getRepository(User::class)->find($currentuser)->getSettinginterfacetype();
 
-    } */
+        $projetid = $request->get('projetid');
+        $tacheid = $request->get('tacheid');
+
+        $tache = $em->getRepository(Tache::class)->find($tacheid);
+
+        $form = $this->createForm(SubTaskType::class);
+
+        $form->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid())
+        {
+            $soustache = $form->getData();
+            $tache->addSoustache($soustache);
+            $em->persist($soustache);
+            $em->flush();
+            $em->persist($tache);
+            $em->flush();
+
+            if($usersetting != 'default_view')
+            {
+                return $this->redirectToRoute('app_projets');
+            }
+            else
+            {
+                return $this->redirectToRoute('app_projectview', ['projetid' => $projetid]);
+            }
+        }
+
+        return $this->renderForm('edit_task/index.html.twig',[
+            'form' => $form
+        ]);
+    }
 }

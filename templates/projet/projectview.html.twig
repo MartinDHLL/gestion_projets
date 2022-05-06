@@ -100,14 +100,19 @@
                         <p> date de fin : {{ tache.datefin|date('d/m/Y') }}
                     {% endif %}
 
-                    <a style="left: 40%;position: absolute" href="{# {{ path('app_newsubtask', {tacheid: tache.id, projetid: projet.id}) }} #}">ajouter une sous tâche</a>
+                    <a style="left: 40%;position: absolute" href="{{ path('app_newsubtask', {tacheid: tache.id, projetid: projet.id}) }}">ajouter une sous tâche</a>
                     <a style="right: 20%;position: absolute" href="{{ path('app_edittask', {tacheid: tache.id, projetid: projet.id}) }}">modifier tâche</a>
                     <a style="right: 5%;position: absolute" href="{{ path('app_removetask', {tacheid: tache.id, projetid: projet.id}) }}">supprimer tâche</a></p></li>
-                        
-                    {# {% for tache in tache.soustache %}
-                    <li><a style="right: 20%;position: absolute" href="{{ path('app_edittask', {tacheid: tache.id, projetid: projet.id}) }}">modifier tâche</a>
-                    <a style="right: 5%;position: absolute" href="{{ path('app_removetask', {tacheid: tache.id, projetid: projet.id}) }}">supprimer tâche</a></p></li>
-                    {% endfor %} #}
+
+                    <ul style="list-style: none;padding-left: 20%;padding-right:10%">
+                    {% for soustache in tache.soustache %}
+                    <li style="padding-left: 5%; border: solid;">
+                    <p> {{ soustache.libelle }} <span style="padding-left: 40%;"> Début : {{ soustache.datedebut }} Fin : {{ soustache.datefin }} </span></p>
+                    <a href="{# {{ path('app_editsubtask', {tacheid: tache.id, projetid: projet.id}) }} #}">modifier sous-tâche</a>
+                    <a style="padding-left: 10%;" href="{# {{ path('app_removesubtask', {tacheid: tache.id, projetid: projet.id}) }} #}">supprimer sous-tâche</a>
+                    </li>
+                    {% endfor %}
+                    </ul>
 
                 {% endfor %}
     </ul>

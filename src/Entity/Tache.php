@@ -36,9 +36,13 @@ class Tache
     #[ORM\Column(type: 'boolean', nullable: true)]
     private $validation;
 
+    #[ORM\OneToMany(mappedBy: 'tache', targetEntity: SousTache::class)]
+    private $soustache;
+
     public function __construct()
     {
         $this->users = new ArrayCollection();
+        $this->soustache = new ArrayCollection();
     }
 
     public function __toString()
@@ -146,6 +150,36 @@ class Tache
     public function setValidation(?bool $validation): self
     {
         $this->validation = $validation;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, SousTache>
+     */
+    public function getSoustache(): Collection
+    {
+        return $this->soustache;
+    }
+
+    public function addSoustache(SousTache $soustache): self
+    {
+        if (!$this->soustache->contains($soustache)) {
+            $this->soustache[] = $soustache;
+            $soustache->setTache($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSoustache(SousTache $soustache): self
+    {
+        if ($this->soustache->removeElement($soustache)) {
+            // set the owning side to null (unless already changed)
+            if ($soustache->getTache() === $this) {
+                $soustache->setTache(null);
+            }
+        }
 
         return $this;
     }

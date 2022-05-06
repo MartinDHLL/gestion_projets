@@ -22,6 +22,9 @@ class SousTache
     #[ORM\Column(type: 'date', nullable: true)]
     private $datefin;
 
+    #[ORM\ManyToOne(targetEntity: Tache::class, inversedBy: 'soustache')]
+    private $tache;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -59,6 +62,18 @@ class SousTache
     public function setDatefin(?\DateTimeInterface $datefin): self
     {
         $this->datefin = $datefin;
+
+        return $this;
+    }
+
+    public function getTache(): ?Tache
+    {
+        return $this->tache;
+    }
+
+    public function setTache(?Tache $tache): self
+    {
+        $this->tache = $tache;
 
         return $this;
     }
