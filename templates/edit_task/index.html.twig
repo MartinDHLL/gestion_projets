@@ -27,11 +27,13 @@
 
 <div id="topbar">
 
-    <span id="logo"><a href="{{ path('app_projets') }}"><img src="https://step.eco/wp-content/uploads/2021/11/Logo-bleu-STEP-RVB-300x128.png" alt="Logo de Step"></a></span>
+    <span id="logo"><img src="https://step.eco/wp-content/uploads/2021/11/Logo-bleu-STEP-RVB-300x128.png" alt="Logo de Step"></span>
     <span id="deconnexion"><a id="deconnect" href="{{ path('app_logout') }}">Se déconnecter</a></span>
 </div>
 
 <div style="position: fixed;top:20%;">
+
+<a {% if app.user.settinginterfacetype == 'default_view' %} href="{{ path('app_projectview', {projetid : projet}) }}" {% else %} href="{{ path('app_projets') }}" {% endif %}>Retour</a>
 
 {{ form(form) }}
 

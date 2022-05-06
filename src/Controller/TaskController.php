@@ -54,8 +54,9 @@ class TaskController extends AbstractController
             }
         }
 
-        return $this->renderForm('projet/nouveauprojet.html.twig', [
-            'form' => $form
+        return $this->renderForm('edit_task/index.html.twig', [
+            'form' => $form,
+            'projet' => $projetid
         ]);
     }
 
@@ -138,7 +139,8 @@ class TaskController extends AbstractController
     
         
         return $this->renderForm('edit_task/index.html.twig', [
-            'form' => $form
+            'form' => $form,
+            'projet' => $projetid
         ]);
     }
 
