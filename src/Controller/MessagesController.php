@@ -18,7 +18,7 @@ class MessagesController extends AbstractController
     public function SendMessage(Request $request, UserInterface $currentuser, ManagerRegistry $managerRegistry): Response
     {
         $em = $managerRegistry->getManager();
-        $user = $em->getRepository(User::class)->find($currentuser->getUserIdentifier());
+        $user = $em->getRepository(User::class)->find($currentuser);
 
         $form = $this->createForm(SignalementType::class);
         $form->handleRequest($request);
