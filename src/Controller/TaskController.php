@@ -181,7 +181,7 @@ class TaskController extends AbstractController
         ]);
     }
 
-    #[Route('/projets/editerSousTache', name: 'app_editsubtask')]
+    #[Route('/projet/editerSousTache', name: 'app_editsubtask')]
     public function EditSubTask(Request $request, UserInterface $currentuser, ManagerRegistry $managerRegistry): Response
     {
         $em = $managerRegistry->getManager();
@@ -215,5 +215,28 @@ class TaskController extends AbstractController
         return $this->renderForm('edit_task/index.html.twig',[
             'form' => $form
         ]);
+    }
+
+    #[Route('projet/supprimerSousTache', name: 'app_removesubtask')]
+    public function RemoveSubTask(Request $request, UserInterface $currentuser, ManagerRegistry $managerRegistry): Response
+    {
+        $em = $managerRegistry->getManager();
+        $usersetting = $em->getRepository(User::class)->find($currentuser)->getSettinginterfacetype();
+
+        $projetid = $request->get('projetid');
+
+        $soustache = $em->getRepository(SousTache::class)->find($request->get('soustacheid'));
+
+        $em->remove($soustache);
+        $em->flush();
+
+        if($usersetting != 'default_view')
+            {
+                return $this->redirectToRoute('app_projets');
+            }
+            else
+            {
+                return $this->redirectToRoute('app_projectview', ['projetid' => $projetid]);
+            }
     }
 }
