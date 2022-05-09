@@ -38,7 +38,7 @@
     {% endif %} 
 
     {% if useredit == true or useredittask == true %} 
-        href="{{ path('app_projectview', {projetid : projet}) }}"
+        href="{{ path('app_projectview', {projetid : projet.id}) }}"
     {% endif %} >
     
     Retour
