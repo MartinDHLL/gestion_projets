@@ -33,7 +33,16 @@
 
 <div style="position: fixed;top:20%;">
 
-<a href="{{ path('app_projets') }}">Retour</a>
+<a  {% if useredit == false and useredittask == false %}
+        href="{{ path('app_projets') }}" 
+    {% endif %} 
+
+    {% if useredit == true or useredittask == true %} 
+        href="{{ path('app_projectview', {projetid : projet}) }}"
+    {% endif %} >
+    
+    Retour
+</a>
 
 {% if useredit == true %}
     <p>Participants au projets :</p>

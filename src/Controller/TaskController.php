@@ -255,7 +255,7 @@ class TaskController extends AbstractController
         $em = $managerRegistry->getManager();
         $tache = $em->getRepository(Tache::class)->find($tacheid);
         $projet = $tache->getProjet();
-        $projet->getLibelle();
+        $projetid = $projet->getId();
 
         $form = $this->createForm(UserType::class);
         $form->handleRequest($request);
@@ -273,7 +273,7 @@ class TaskController extends AbstractController
      [
         'form' => $form,
         'tache' => $tache,
-        'projet' => $projet,
+        'projet' => $projetid,
         'useredittask' => true,
         'useredit' => false
      ]);
