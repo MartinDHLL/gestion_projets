@@ -56,6 +56,6 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud('Gérer projets', 'fas fa-list', Projet::class);
         yield MenuItem::linkToCrud('Gérer taches', 'fas fa-list', Tache::class);
         yield MenuItem::linkToCrud('Messages Signalement utilisateurs', 'fa-solid fa-comment', MessageSignalementAdmin::class);
-        yield MenuItem::linkToCrud('Modérer messages projets', 'fa-solid fa-comment', Message::class);
+        yield MenuItem::linkToCrud('Messages projets', 'fa-solid fa-comment', Message::class);
     }
 }

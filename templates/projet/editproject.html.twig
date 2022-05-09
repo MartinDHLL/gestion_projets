@@ -38,13 +38,22 @@
 {% if useredit == true %}
     <p>Participants au projets :</p>
     <ul class="alignlist">
-    {% for user in projet.users %}
-        <li>{{ user.prenom }} {{ user.nom }}, </li>
-    {% endfor %} 
+        {% for user in projet.users %}
+            <li>{{ user.prenom }} {{ user.nom }}, </li>
+        {% endfor %}
     </ul>
 {% endif %}
 
-{% if useredit == false %}
+{% if useredittask == true %}
+    <p>Participants à la tache :</p>
+    <ul class="alignlist">
+        {% for user in tache.users %}
+            <li>{{ user.prenom }} {{ user.nom }}, </li>
+        {% endfor %}
+    </ul>
+{% endif %}
+
+{% if useredit == false and useredittask == false %}
 <p>Editer le projet <span style="color: rgb(105, 87, 6);"> {{ projet }} </span></p>
 {% endif %}
 

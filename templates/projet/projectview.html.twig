@@ -95,7 +95,7 @@
                 {% for tache in projet.tache %}
 
                     <li style="background-color:white;border-radius:50px;display:block;padding-left:10%;border:2px;border-color:black;border-style:solid;" 
-                    <p>{{ tache.libelle }} <span style="position: absolute; right:40%;font-size: 14pt;border-style: solid;" > Statut : {{ tache.statut }} </span> <a style="position: absolute; right:5%;" href="{# {{ path('app_taskadduser') }} #}">Ajouter des utilisateurs à la tâche</a> </p>
+                    <p>{{ tache.libelle }} <span style="position: absolute; right:40%;font-size: 14pt;border-style: solid;" > Statut : {{ tache.statut }} </span> <a style="position: absolute; right:5%;" href="{{ path('app_taskadduser', {tacheid : tache.id}) }}">Ajouter des utilisateurs à la tâche</a> </p>
                     <p> date de début : {{ tache.datedebut|date('d/m/Y') }}</p>
 
                     {% if tache.datefin %}

@@ -9,6 +9,8 @@ use App\Entity\Projet;
 use App\Entity\SousTache;
 use App\Entity\User;
 use App\Form\SubTaskType;
+use App\Form\UserType;
+use App\Repository\UserRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -19,7 +21,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 class TaskController extends AbstractController
 {
-    #[Route('/projets/nouvelleTache', name: 'app_newtask')]
+    #[Route('/projet/nouvelleTache', name: 'app_newtask')]
     public function NewTask(Request $request, ManagerRegistry $managerRegistry, UserInterface $currentuser): Response
     { 
 
@@ -40,6 +42,7 @@ class TaskController extends AbstractController
         if($form->isSubmitted() && $form->isValid())
         {
             $tache = $form->getData();
+            $tache->addUser($em->getRepository(User::class)->find($currentuser));
             $em->persist($tache);
             $em->flush();
             $tache->setProjet($projet);
@@ -144,7 +147,7 @@ class TaskController extends AbstractController
         ]);
     }
 
-    #[Route('/projet/nouvelleSousTache', name: 'app_newsubtask')]
+    #[Route('/projet/tache/nouvelleSousTache', name: 'app_newsubtask')]
     public function MakeSubtask(Request $request, ManagerRegistry $managerRegistry, UserInterface $currentuser): Response 
     {   
         $em = $managerRegistry->getManager();
@@ -184,7 +187,7 @@ class TaskController extends AbstractController
         ]);
     }
 
-    #[Route('/projet/editerSousTache', name: 'app_editsubtask')]
+    #[Route('/projet/tache/modifierSousTache', name: 'app_editsubtask')]
     public function EditSubTask(Request $request, UserInterface $currentuser, ManagerRegistry $managerRegistry): Response
     {
         $em = $managerRegistry->getManager();
@@ -242,5 +245,37 @@ class TaskController extends AbstractController
             {
                 return $this->redirectToRoute('app_projectview', ['projetid' => $projetid]);
             }
+    }
+
+    #[Route('projet/tache/ajoutUtilisateurs', name:'app_taskadduser')]
+    public function AjoutUtilisateurSousTache(Request $request, ManagerRegistry $managerRegistry, UserRepository $users)
+    {
+        $tacheid = $request->get('tacheid');
+
+        $em = $managerRegistry->getManager();
+        $tache = $em->getRepository(Tache::class)->find($tacheid);
+        $projet = $tache->getProjet();
+        $projet->getLibelle();
+
+        $form = $this->createForm(UserType::class);
+        $form->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid())
+        {
+            $user = $users->find($form->get('users')->getData());
+            $tache->addUser($user);
+            $em->persist($tache);
+            $em->flush();
+        }
+
+
+        return $this->renderForm('projet/editproject.html.twig', 
+     [
+        'form' => $form,
+        'tache' => $tache,
+        'projet' => $projet,
+        'useredittask' => true,
+        'useredit' => false
+     ]);
     }
 }

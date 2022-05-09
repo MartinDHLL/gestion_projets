@@ -53,10 +53,11 @@ class ProjectController extends AbstractController
         ]);
     }
 
-    #[Route('/projets/modifier', name: 'app_editproject')]
+    #[Route('/projet/modifier', name: 'app_editproject')]
     public function EditProject(Request $request, ManagerRegistry $managerRegistry): Response
     {
         $useredit = false;
+        $useredittask = false;
         $projetlibelle = $request->get('projetlibelle');
         $projetid = $request->get('projetid');
 
@@ -92,11 +93,12 @@ class ProjectController extends AbstractController
             'projet' => $projetlibelle,
             'form' => $form,
             'projetid' => $projetid,
-            'useredit' => $useredit
+            'useredit' => $useredit,
+            'useredittask' => $useredittask
         ]);
     }
 
-    #[Route('/projets/nouveauProjet', name: 'app_newproject')]
+    #[Route('/projet/nouveauProjet', name: 'app_newproject')]
     public function NewProject(Request $request, ManagerRegistry $managerRegistry, UserInterface $currentuser): Response
     {
         $em = $managerRegistry->getManager();
@@ -172,7 +174,7 @@ class ProjectController extends AbstractController
         
     }
 
-    #[Route('/projets/undo', name: 'app_undoproject')]
+    #[Route('/projet/undo', name: 'app_undoproject')]
     public function UndoProject(Request $request, ManagerRegistry $managerRegistry, UserInterface $currentuser): Response
     {
 
@@ -207,7 +209,7 @@ class ProjectController extends AbstractController
         return $this->redirectToRoute('app_projets', ['undolibelle' => $libelle]);
     }
 
-    #[Route('/projets/taches', name: 'app_projectview')]
+    #[Route('/projet/taches', name: 'app_projectview')]
     public function ProjectView(Request $request, ManagerRegistry $managerRegistry): Response
     {
         $projetid = $request->get('projetid');
@@ -219,7 +221,7 @@ class ProjectController extends AbstractController
         ]);
     }
 
-    #[Route('/projets/ajoutUtilisateur', name: 'app_projectadduser')]
+    #[Route('/projet/ajoutUtilisateur', name: 'app_projectadduser')]
     public function AddUser(Request $request, ManagerRegistry $managerRegistry): Response
     {
         $projetid = $request->get('projetid');
@@ -242,7 +244,8 @@ class ProjectController extends AbstractController
         return $this->renderForm('projet/editproject.html.twig', [
             'form' => $form,
             'projet' => $projet,
-            'useredit' => $useredit
+            'useredit' => $useredit,
+            'useredittask' => false
         ]);
     }
     
