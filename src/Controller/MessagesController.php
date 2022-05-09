@@ -79,6 +79,7 @@ class MessagesController extends AbstractController
             $newmessage->setUser($user)->setProjet($projet)->setCorps($form->get('corps')->getData());
             $em->persist($newmessage);
             $em->flush();
+            return $this->redirectToRoute('app_messagerie', ['projetid' => $projetid]);
         }
 
         return $this->renderForm('messages/messagerie.html.twig', [
