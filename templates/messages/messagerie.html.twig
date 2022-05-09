@@ -1,0 +1,105 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}STEP : Gestion Projets{% endblock %}
+
+{% set count = 0 %}
+{% for role in app.user.roles %}
+    {% if role == 'ROLE_GESTION' or role == 'ROLE_ADMIN' %}
+            {% set count = 1 %}
+    {% endif %}
+{% endfor %}
+
+{% block body %}
+
+{% if app.user.settinginterfacetype == 'complete_view' %}
+
+<h1>ERREUR</h1>
+
+{% else %}
+
+{% if app.user.settingtheme == 'dark_theme' %}
+    <style>
+        body {
+            background-color: black;
+        }
+        div#topbar {
+            background-color: rgb(59, 55, 55);
+        }
+        div#elementshowbox {
+            background-color: rgb(59, 55, 55);
+        }
+        div#buttonsbox {
+            background-color: rgb(59, 55, 55);
+        }
+    </style>
+{% endif %}
+
+<style>
+
+    li.button {
+        background-color: white;
+        border-radius: 20px;
+        font-size: 20pt;
+    }
+
+    span.plustext {
+        color: green;
+        font-size: 20pt;
+        border: solid;
+        border-radius: 20px;
+        
+    }
+
+
+</style>
+
+
+
+<div id="topbar">
+
+    <span id="logo"><a href="{{ path('app_projets') }}"><img src="https://step.eco/wp-content/uploads/2021/11/Logo-bleu-STEP-RVB-300x128.png" alt="Logo de Step"></a></span>
+
+    <span id="projectinfo">
+        <p>Projet : <span style="color: aqua;">{{ projet.libelle }}</span> Budget : <span style="color: aqua;">{{ projet.budget }}</span> Couts total : {{ projet.couts }}
+            <br> <ul class="alignlist">
+                {% if count == 1 %}<li><a style="background-color: aliceblue;" href="{{ path('app_projectadduser', {projetid :projet.id}) }}">Ajouter Utilisateurs</a></li>{% endif %}
+                {% for user in projet.users %}
+                <li>{{ user.prenom }} {{ user.nom }},</li>
+            {% endfor %}</ul>
+        </p>
+
+    <span id="righttopbar" style="right: -22%;"><a id="deconnect" href="{{ path('app_logout') }}">Se déconnecter</a><a href="{{ path('app_settings') }}"><img style="width:20%; position: absolute; padding-left:45%" src="{{ asset('build/gear-solid.png') }}" alt="White Gear"></a></span>
+</div>
+
+ <div id="buttonsbox" style="width: 25%;">
+    <ul class="alignlist">
+        <li class="button" style="background-color: unset;padding-right:20%;"><a class="removeunderline" href="{{ path('app_projectview', {projetid: projet.id}) }}"><img style="width: 4%; position:absolute" src="{{ asset('build/angle-left-solid.svg') }}" alt="flèche retour"></a></li>
+        <li style="position: absolute;left:30%;top:1%;">{{ form(form) }}</li>
+    </ul>
+</div>
+
+<div id="elementshowbox">
+
+    {% if messages|length == 0 %}
+        <p>Aucun message</p>
+    {% endif %}
+
+    <ul style="list-style: none;">
+
+                {% for message in messages %}
+                    <li style="background-color: black;color:white;padding:1%;border-radius:10px"> 
+                        <p> {{ message.user.prenom }} {{ message.user.nom }} </p> 
+                        <p> {{ message.corps }} </p> 
+                    </li>
+                    <li style="padding: 1%;"></li>
+                {% endfor %}
+    </ul>
+
+    
+</div>
+
+<a style="position: fixed;bottom: 0;" href="{{ path('sendproblemtoadmin') }}">Signaler un problème à l'admin</a>
+
+{% endif %}
+
+{% endblock %}

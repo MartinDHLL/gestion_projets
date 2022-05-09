@@ -6,6 +6,7 @@ use App\Entity\Message;
 use App\Entity\MessageSignalementAdmin;
 use App\Entity\Projet;
 use App\Entity\User;
+use App\Form\MessageType;
 use App\Form\SignalementType;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -47,20 +48,44 @@ class MessagesController extends AbstractController
     
     
     #[Route('/projet/messagerie', name: 'app_messagerie')]
-    public function showMessagerie(Request $request ,ManagerRegistry $managerRegistry): Response 
+    public function showMessagerie(Request $request, ManagerRegistry $managerRegistry, UserInterface $currentuser): Response 
     {
         $projetid = $request->get('projetid');
 
         $em = $managerRegistry->getManager();
         $projet = $em->getRepository(Projet::class)->find($projetid);
+        $user = $em->getRepository(User::class)->find($currentuser);
 
         $messagesprojet = $em->getRepository(Message::class)->findBy(['projet' => $projet]);
+        $user->setConfirmationlecturemessage(false);
+        $em->persist($user);
+        $em->flush();
 
-        dd($messagesprojet);
+        $form = $this->createForm(MessageType::class);
+        $form->handleRequest($request);
 
-        return $this->renderForm('messagerie.html.twig', [
-            'messages' => $messagesprojet
+        $allusers = $projet->getUsers();
+
+        
+
+        $newmessage = new Message;
+
+        if($form->isSubmitted() && $form->isValid())
+        {
+            foreach($allusers as $user)
+            {
+                $user->setConfirmationlecturemessage(true);
+            }
+            $newmessage->setUser($user)->setProjet($projet)->setCorps($form->get('corps')->getData());
+            $em->persist($newmessage);
+            $em->flush();
+        }
+
+        return $this->renderForm('messages/messagerie.html.twig', [
+            'messages' => $messagesprojet,
+            'projet' => $projet,
+            'form' => $form
         ]);
     }
-    
+
 }
