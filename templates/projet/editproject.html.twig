@@ -37,7 +37,11 @@
         href="{{ path('app_projets') }}" 
     {% endif %} 
 
-    {% if useredit == true or useredittask == true %} 
+    {% if useredit == true %} 
+        href="{{ path('app_projectview', {projetid : projet.id}) }}"
+    {% endif %}
+
+    {% if useredittask == true  %}
         href="{{ path('app_projectview', {projetid : projet}) }}"
     {% endif %} >
     
