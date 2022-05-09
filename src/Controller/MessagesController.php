@@ -40,7 +40,7 @@ class MessagesController extends AbstractController
             return $this->redirectToRoute('app_projets');
         }
 
-        return $this->renderForm('sendadminmessage.html.twig', [
+        return $this->renderForm('messages/sendadminmessage.html.twig', [
             'form' => $form
         ]);
     }
