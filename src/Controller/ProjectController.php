@@ -238,7 +238,7 @@ class ProjectController extends AbstractController
             $projet->AddUser($form->get('users')->getData());
             $em->persist($projet);
             $em->flush();
-            return $this->redirectToRoute('app_projectview', ['projetid' => $projetid]);
+            return $this->redirectToRoute('app_projectadduser', ['projetid' => $projetid]);
         }
 
         return $this->renderForm('projet/editproject.html.twig', [
