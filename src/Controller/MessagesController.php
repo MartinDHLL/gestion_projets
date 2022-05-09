@@ -66,19 +66,19 @@ class MessagesController extends AbstractController
 
         $allusers = $projet->getUsers();
 
-        
-
         $newmessage = new Message;
 
         if($form->isSubmitted() && $form->isValid())
         {
-            foreach($allusers as $user)
-            {
-                $user->setConfirmationlecturemessage(true);
-            }
             $newmessage->setUser($user)->setProjet($projet)->setCorps($form->get('corps')->getData());
             $em->persist($newmessage);
             $em->flush();
+            foreach($allusers as $user)
+            {
+                $user->setConfirmationlecturemessage(true);
+                $em->persist($user);
+                $em->flush();
+            }
             return $this->redirectToRoute('app_messagerie', ['projetid' => $projetid]);
         }
 
