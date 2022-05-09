@@ -46,7 +46,7 @@ class MessagesController extends AbstractController
     }
     
     
-    #[Route('/projet/messagerie', name: 'app_messagerie')]
+    /* #[Route('/projet/messagerie', name: 'app_messagerie')]
     public function showMessagerie(Request $request ,ManagerRegistry $managerRegistry): Response 
     {
         $projetid = $request->get('projetid');
@@ -61,6 +61,6 @@ class MessagesController extends AbstractController
         return $this->renderForm('messagerie.html.twig', [
             'messages' => $messagesprojet
         ]);
-    }
+    }  */
     
 }
