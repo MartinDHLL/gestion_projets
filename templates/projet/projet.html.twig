@@ -93,7 +93,7 @@
                 <p>Aucun projet créé, appuyez sur le bouton <span style="color: darkgreen;">Créer un projet</span></p>
             {% else %}
                 <li style='border-radius:10px;display:block;padding:2%;border:2px;border-color:black;border-style:solid;background-color:lightgrey;'
-                <p>{{ projet.libelle }} <a href="{{ path('app_projectview', {projetid : projet.id}) }}"><img style="width: 5%;position:relative;padding-left:80%;" src="{{ asset('build/arrow-right-to-bracket-solid.png') }}" alt=""></a></p>
+                <p>{{ projet.libelle }} <a href="{{ path('app_projectview', {projetid : projet.id}) }}"><img style="width: 5%;position:relative;padding-left:80%;" src="{{ asset('build/arrow-right-to-bracket-solid.png') }}" alt="Icone entrer"></a></p>
 
                 <p> date de début : {{ projet.datedebut|date('d/m/Y') }} </p>
 
