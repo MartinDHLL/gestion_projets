@@ -1,5 +1,3 @@
-# gestion_projets
+# Application gestion de projets STEP
 
 Optimisé pour chrome
-
-- Ajustements interface en cours pour Firefox et Safari
