@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Doctrine\Persistence\ManagerRegistry;
 use App\Entity\Projet;
+use App\Entity\Tache;
 use App\Entity\User;
 use App\Form\UserType;
 use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
@@ -210,7 +211,7 @@ class ProjectController extends AbstractController
     }
 
     #[Route('/projet/taches', name: 'app_projectview')]
-    public function ProjectView(Request $request, ManagerRegistry $managerRegistry): Response
+    public function ProjectView(Request $request, ManagerRegistry $managerRegistry, UserInterface $currentuser): Response
     {
         $projetid = $request->get('projetid');
         
