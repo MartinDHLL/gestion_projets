@@ -262,8 +262,6 @@ class ProjectController extends AbstractController
         $projet = $projetrepo->find($projetid);
 
         $currentuser = $user->find($userid);
-        
-        dd($currentuser->getRoles());
 
         if($checkuser == $currentuser || in_array("ROLE_GESTION", $currentuser->getRoles()))
         {
