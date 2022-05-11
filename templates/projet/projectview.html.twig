@@ -64,7 +64,7 @@
             <br> <ul class="alignlist">
                 {% if count == 1 %}<li><a style="background-color: aliceblue;" href="{{ path('app_projectadduser', {projetid :projet.id}) }}">Ajouter Utilisateurs</a></li>{% endif %}
                 {% for user in projet.users %}
-                <li>{{ user.prenom }} {{ user.nom }} <a href="{{ path('app_projectremoveuser', {user : user.id, projet : projet.id}) }}"><img style="width: 3%;" src="{{ asset('build/images/user-xmark-solid.png') }}" alt="delete_logo"></a> ,</li>
+                <li>{{ user.prenom }} {{ user.nom }} {% if count == 1 %}<a href="{{ path('app_projectremoveuser', {user : user.id, projet : projet.id}) }}"><img style="width: 3%;" src="{{ asset('build/images/user-xmark-solid.png') }}" alt="delete_logo"></a>{% endif %}  ,</li>
             {% endfor %}</ul>
         </p>
     </span>
