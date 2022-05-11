@@ -154,6 +154,7 @@ class ProjectController extends AbstractController
         $budget = $projet->getBudget();
         $couts = $projet->getCouts();
 
+
         $em->remove($projet);
         $em->flush();
 
@@ -262,15 +263,15 @@ class ProjectController extends AbstractController
 
         $currentuser = $user->find($userid);
         
-        if($checkuser != $currentuser)
+        if($checkuser == $currentuser || $currentuser->getRoles() == "[ROLE_GESTION]")
         {
-            $projet->removeUser($currentuser);
-            $em->persist($projet);
-            $em->flush();
             return $this->redirectToRoute('app_projectview', ['projetid' => $projetid]);
         }
         else
         {
+            $projet->removeUser($currentuser);
+            $em->persist($projet);
+            $em->flush();
             return $this->redirectToRoute('app_projectview', ['projetid' => $projetid]);
         }
         
