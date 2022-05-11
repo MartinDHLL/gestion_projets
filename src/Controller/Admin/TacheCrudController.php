@@ -25,7 +25,6 @@ class TacheCrudController extends AbstractCrudController
             TextField::new('libelle')->setLabel('libellé'),
             AssociationField::new('projet')->setLabel(('projet associé'))->setRequired('projet'),
             AssociationField::new('users')->setLabel('participants à la tâche'),
-            AssociationField::new('soustache')->setLabel('sous tache'),
             DateField::new('datedebut')->setLabel('date de début'),
             DateField::new('datefin')->setLabel('date de fin'),
             TextField::new('statut'),

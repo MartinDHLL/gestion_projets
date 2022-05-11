@@ -25,7 +25,6 @@ class ProjetCrudController extends AbstractCrudController
             TextField::new('libelle')->setLabel('libellé du projet'),
             AssociationField::new('users')->setLabel('participants au projet'),
             AssociationField::new('gestionnaires'),
-            AssociationField::new('tache'),
             DateField::new('datedebut')->setLabel('date de début'),
             DateField::new('datefin')->setLabel('date de fin'),
             MoneyField::new('budget')->setCurrency('EUR'),
