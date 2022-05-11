@@ -64,7 +64,7 @@
             <br> <ul class="alignlist">
                 {% if count == 1 %}<li><a style="background-color: aliceblue;" href="{{ path('app_projectadduser', {projetid :projet.id}) }}">Ajouter Utilisateurs</a></li>{% endif %}
                 {% for user in projet.users %}
-                <li>{{ user.prenom }} {{ user.nom }},</li>
+                <li>{{ user.prenom }} {{ user.nom }} <a href="{{ path('app_projectremoveuser', {user : user.id, projet : projet.id}) }}"><img style="width: 3%;" src="{{ asset('build/images/user-xmark-solid.png') }}" alt="delete_logo"></a> ,</li>
             {% endfor %}</ul>
         </p>
     </span>
@@ -94,7 +94,7 @@
                 {% for tache in app.user.tache %}
 
                     <li style="background-color:white;border-radius:50px;display:block;padding-left:10%;border:2px;border-color:black;border-style:solid;" 
-                    <p>{{ tache.libelle }} <span style="position: absolute; right:40%;font-size: 14pt;border-style: solid;" > Statut : {{ tache.statut }} </span> <a style="position: absolute; right:5%;" href="{{ path('app_taskadduser', {tacheid : tache.id}) }}">Ajouter des utilisateurs à la tâche</a> </p>
+                    <p>{{ tache.libelle }} <span style="position: absolute; right:40%;font-size: 14pt;border-style: solid;" > Statut : {{ tache.statut }} </span> <a style="position: absolute; right:5%;" href="{{ path('app_taskadduser', {tacheid : tache.id}) }}">Utilisateurs</a> </p>
                     <p> date de début : {{ tache.datedebut|date('d/m/Y') }}</p>
 
                     {% if tache.datefin %}
