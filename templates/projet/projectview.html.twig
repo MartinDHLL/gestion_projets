@@ -76,14 +76,14 @@
             {% endif %}</p>
     </span>
 
-    <span id="righttopbar"><a id="deconnect" href="{{ path('app_logout') }}">Se déconnecter</a><a href="{{ path('app_settings') }}"><img style="width:20%; position: absolute; padding-left:45%" src="{{ asset('gear-solid.png') }}" alt="White Gear"></a></span>
+    <span id="righttopbar"><a id="deconnect" href="{{ path('app_logout') }}">Se déconnecter</a><a href="{{ path('app_settings') }}"><img style="width:20%; position: absolute; padding-left:45%" src="{{ asset('build/images/gear-solid.png') }}" alt="White Gear"></a></span>
 </div>
 
  <div id="buttonsbox">
     <ul class="alignlist">
-        <li class="button" style="background-color: unset;padding-right:20%;"><a class="removeunderline" href="{{ path('app_projets') }}"><img style="width: 4%; position:absolute" src="{{ asset('angle-left-solid.svg') }}" alt="flèche retour"></a></li>
+        <li class="button" style="background-color: unset;padding-right:20%;"><a class="removeunderline" href="{{ path('app_projets') }}"><img style="width: 4%; position:absolute" src="{{ asset('build/images/angle-left-solid.svg') }}" alt="flèche retour"></a></li>
         <li class="button" style="padding: 1%;"><a class="removeunderline" href="{{ path('app_newtask', {projetid : projet.id}) }}">Créer une tâche<span class="plustext">+</span></a></li>
-        <li class="button" style="background-color: unset;padding-left:20%;"><a class="removeunderline" href="{{ path('app_messagerie', {projetid : projet.id}) }}"><img style="width: 8%;" src="{{ asset('comment-solid.svg') }}" alt="icone messagerie"></a>{% if app.user.confirmationlecturemessage == true %}<span style="color: red;">!</span>{% endif %}</li>
+        <li class="button" style="background-color: unset;padding-left:20%;"><a class="removeunderline" href="{{ path('app_messagerie', {projetid : projet.id}) }}"><img style="width: 8%;" src="{{ asset('build/images/comment-solid.svg') }}" alt="icone messagerie"></a>{% if app.user.confirmationlecturemessage == true %}<span style="color: red;">!</span>{% endif %}</li>
     </ul>
 </div>
 
@@ -107,7 +107,7 @@
 
                     <ul style="list-style: none;padding-left: 20%;padding-right:10%">
                     {% if tache.soustache|length != 0 %}
-                    <img style="position: relative;width: 5%;transform: rotate(90deg);left:-10%;" src="{{ asset('arrow-turn-up-solid.svg') }}" alt="">
+                    <img style="position: relative;width: 5%;transform: rotate(90deg);left:-10%;" src="{{ asset('build/images/arrow-turn-up-solid.svg') }}" alt="">
                     {% endif %}
                     {% for soustache in tache.soustache %}
                     <li style="padding-left: 5%; border: solid;">

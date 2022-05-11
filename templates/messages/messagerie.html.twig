@@ -68,12 +68,12 @@
             {% endfor %}</ul>
         </p>
 
-    <span id="righttopbar" style="right: -110%;"><a id="deconnect" href="{{ path('app_logout') }}">Se déconnecter</a><a href="{{ path('app_settings') }}"><img style="width:20%; position: absolute; padding-left:45%" src="{{ asset('build/gear-solid.png') }}" alt="White Gear"></a></span>
+    <span id="righttopbar" style="right: -110%;"><a id="deconnect" href="{{ path('app_logout') }}">Se déconnecter</a><a href="{{ path('app_settings') }}"><img style="width:20%; position: absolute; padding-left:45%" src="{{ asset('build/images/gear-solid.png') }}" alt="White Gear"></a></span>
 </div>
 
  <div id="buttonsbox" style="width: 25%;">
     <ul class="alignlist">
-        <li class="button" style="background-color: unset;padding-right:20%;"><a class="removeunderline" href="{{ path('app_projectview', {projetid: projet.id}) }}"><img style="width: 4%; position:absolute" src="{{ asset('build/angle-left-solid.svg') }}" alt="flèche retour"></a></li>
+        <li class="button" style="background-color: unset;padding-right:20%;"><a class="removeunderline" href="{{ path('app_projectview', {projetid: projet.id}) }}"><img style="width: 4%; position:absolute" src="{{ asset('build/images/angle-left-solid.svg') }}" alt="flèche retour"></a></li>
         <li style="position: absolute;left:30%;top:1%;">{{ form(form) }}</li>
     </ul>
 </div>
