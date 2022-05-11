@@ -263,6 +263,8 @@ class ProjectController extends AbstractController
 
         $currentuser = $user->find($userid);
         
+        dd($currentuser->getRoles());
+
         if($checkuser == $currentuser || $currentuser->getRoles() == "ROLE_GESTION")
         {
             return $this->redirectToRoute('app_projectview', ['projetid' => $projetid]);
