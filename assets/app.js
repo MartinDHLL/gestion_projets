@@ -18,3 +18,4 @@ import './pictures/arrow-right-to-bracket-solid.png';
 import './pictures/arrow-turn-up-solid.svg';
 import './pictures/comment-solid.svg';
 import './pictures/gear-solid.png';
+import './pictures/user-xmark-solid.png';

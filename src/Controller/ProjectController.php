@@ -9,9 +9,10 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Doctrine\Persistence\ManagerRegistry;
 use App\Entity\Projet;
-use App\Entity\Tache;
 use App\Entity\User;
 use App\Form\UserType;
+use App\Repository\ProjetRepository;
+use App\Repository\UserRepository;
 use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -248,6 +249,32 @@ class ProjectController extends AbstractController
             'useredit' => $useredit,
             'useredittask' => false
         ]);
+    }
+
+    #[Route('projet/supprimerUtilisateur', name : 'app_projectremoveuser')]
+    public function RemoveUser(Request $request, ManagerRegistry $manager, UserRepository $user, ProjetRepository $projetrepo, UserInterface $currentconnecteduser) : Response
+    {
+        $em = $manager->getManager();
+        $userid = $request->get('user');
+        $projetid = $request->get('projet');
+        $checkuser = $user->find($currentconnecteduser);
+        $projet = $projetrepo->find($projetid);
+
+        $currentuser = $user->find($userid);
+        
+        if($checkuser != $currentuser)
+        {
+            $projet->removeUser($currentuser);
+            $em->persist($projet);
+            $em->flush();
+            return $this->redirectToRoute('app_projectview', ['projetid' => $projetid]);
+        }
+        else
+        {
+            return $this->redirectToRoute('app_projectview', ['projetid' => $projetid]);
+        }
+        
+
     }
     
 }
