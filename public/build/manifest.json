@@ -1,0 +1,12 @@
+{
+  "build/app.css": "/build/app.css",
+  "build/app.js": "/build/app.js",
+  "build/runtime.js": "/build/runtime.js",
+  "build/vendors-node_modules_symfony_stimulus-bridge_dist_index_js-node_modules_core-js_modules_es_ob-7db861.js": "/build/vendors-node_modules_symfony_stimulus-bridge_dist_index_js-node_modules_core-js_modules_es_ob-7db861.js",
+  "build/images/gear-solid.png": "/build/images/gear-solid.f2084a47.png",
+  "build/images/user-xmark-solid.png": "/build/images/user-xmark-solid.42571a84.png",
+  "build/images/arrow-right-to-bracket-solid.png": "/build/images/arrow-right-to-bracket-solid.7af7c28f.png",
+  "build/images/arrow-turn-up-solid.svg": "/build/images/arrow-turn-up-solid.f7248cae.svg",
+  "build/images/comment-solid.svg": "/build/images/comment-solid.2ff0b66c.svg",
+  "build/images/angle-left-solid.svg": "/build/images/angle-left-solid.0ef3b248.svg"
+}
