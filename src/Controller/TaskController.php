@@ -122,6 +122,8 @@ class TaskController extends AbstractController
 
         if($form->isSubmitted() && $form->isValid())
         {
+            if(in_array($currentuser, $tache->getUsers()))
+            {
             $tache->setLibelle($form->get('libelle')->getData())
             ->setDateDebut($form->get('datedebut')->getData())
             ->setDateFin($form->get('datefin')->getData())
@@ -129,7 +131,8 @@ class TaskController extends AbstractController
             ;
 
             $em->flush();
-
+            }
+            
             if($usersetting != 'default_view')
             {
                 return $this->redirectToRoute('app_projets');
