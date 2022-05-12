@@ -132,7 +132,7 @@ class TaskController extends AbstractController
 
             $em->flush();
             }
-            
+
             if($usersetting != 'default_view')
             {
                 return $this->redirectToRoute('app_projets');
@@ -206,6 +206,7 @@ class TaskController extends AbstractController
 
         if($form->isSubmitted() && $form->isValid())
         {
+            if(in_array($currentuser,$soustache->getUsers()))
             $soustache->setLibelle($form->get('libelle')->getData())->setDatedebut($form->get('datedebut')->getData());
             
             $em->persist($soustache);
