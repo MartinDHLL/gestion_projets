@@ -1,3 +1,8 @@
 # Application gestion de projets STEP
 
-Optimisé pour chrome
+## Optimisé pour chrome
+
+### ° Commandes pour lancer le projet en local :
+
+- npm install
+- composer install (remplacer la base de donnée local dans le .env avant de l'effectuer)
