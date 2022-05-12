@@ -70,7 +70,7 @@
     <span id="logo"><a href="{{ path('app_projets') }}"><img src="https://step.eco/wp-content/uploads/2021/11/Logo-bleu-STEP-RVB-300x128.png" alt="Logo de Step"></a></span>
 
     <span id="projectinfo">
-        <p>Projet : <span style="color: aqua;">{{ projet.libelle }}</span> Budget : <span style="color: aqua;">{{ projet.budget }}</span> Couts total : <span style="color: aqua;">{{ projet.couts }}</span>
+        <p>Projet : <span style="color: aqua;">{{ projet.libelle }}</span> {% if projet.budget %} Budget : <span style="color: aqua;">{{ projet.budget }} €</span> {% endif %} {% if projet.couts %} Couts total : <span style="color: aqua;">{{ projet.couts }} €</span>{% endif %}
             <br> <ul class="alignlist">
                 {% if count == 1 %}<li><a style="background-color: aliceblue;" href="{{ path('app_projectadduser', {projetid :projet.id}) }}">Ajouter Utilisateurs</a></li>{% endif %}
                 {% for user in projet.users %}
