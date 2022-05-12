@@ -108,7 +108,7 @@ class TaskController extends AbstractController
         $tache = $em->getRepository(Tache::class)->find($tacheid);
 
         $usersetting = $em->getRepository(User::class)->find($currentuser)->getSettinginterfacetype();
-        $user = $userrepo->find($currentuser);
+        
         if(!$tache)
         {
         throw $this->createNotFoundException(
@@ -120,18 +120,15 @@ class TaskController extends AbstractController
 
         $form->handleRequest($request);
 
+
         if($form->isSubmitted() && $form->isValid())
         {
-            if(in_array($user, $tache->getUsers()))
-            {
-                $tache->setLibelle($form->get('libelle')->getData())
-                ->setDateDebut($form->get('datedebut')->getData())
-                ->setDateFin($form->get('datefin')->getData())
-                ->setStatut($form->get('statut')->getData())
-                ;
-
-                $em->flush();
-            }
+            $tache->setLibelle($form->get('libelle')->getData())
+            ->setDateDebut($form->get('datedebut')->getData())
+            ->setDateFin($form->get('datefin')->getData())
+            ->setStatut($form->get('statut')->getData())
+            ;
+            $em->flush();
 
             if($usersetting != 'default_view')
             {
@@ -146,7 +143,8 @@ class TaskController extends AbstractController
         
         return $this->renderForm('edit_task/index.html.twig', [
             'form' => $form,
-            'projet' => $projetid
+            'projet' => $projetid,
+            'tache' => $tacheid
         ]);
     }
 
@@ -203,18 +201,15 @@ class TaskController extends AbstractController
         $form = $this->createForm(SubTaskType::class, $soustache);
         
         $form->handleRequest($request);
-        
-        $user = $userrepo->find($currentuser);
 
         if($form->isSubmitted() && $form->isValid())
         {
-            if(in_array($user,$soustache->getUsers()))
-            {
-                $soustache->setLibelle($form->get('libelle')->getData())->setDatedebut($form->get('datedebut')->getData());
+
+            $soustache->setLibelle($form->get('libelle')->getData())->setDatedebut($form->get('datedebut')->getData());
             
-                $em->persist($soustache);
-                $em->flush();
-            }
+            $em->persist($soustache);
+            $em->flush();
+
 
             if($usersetting != 'default_view')
             {

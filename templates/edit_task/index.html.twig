@@ -2,6 +2,13 @@
 
 {% block title %} Modifier Tâche {% endblock %}
 
+{% set checktache = 0 %}
+{% for taches in app.user.tache %}
+    {% if taches.id == tache %}
+        {% set checktache = 1 %}
+    {% endif %}
+{% endfor %}
+
 {% block body %}
 <style>
 
@@ -23,8 +30,6 @@
 
 </style>
 
-
-
 <div id="topbar">
 
     <span id="logo"><img src="https://step.eco/wp-content/uploads/2021/11/Logo-bleu-STEP-RVB-300x128.png" alt="Logo de Step"></span>
@@ -35,7 +40,11 @@
 
 <a {% if app.user.settinginterfacetype == 'default_view' %} href="{{ path('app_projectview', {projetid : projet}) }}" {% else %} href="{{ path('app_projets') }}" {% endif %}>Retour</a>
 
+{% if checktache == 1 %}
 {{ form(form) }}
+{% else %}
+<p>erreur</p>
+{% endif %}
 
 </div>
 
