@@ -3,11 +3,19 @@
 {% block title %} Modifier Tâche {% endblock %}
 
 {% set checktache = 0 %}
-{% for taches in app.user.tache %}
-    {% if taches.id == tache %}
-        {% set checktache = 1 %}
-    {% endif %}
-{% endfor %}
+{% if isNew %}
+
+    {% set checktache = 1 %}
+
+{% else %}
+        
+    {% for taches in app.user.tache %}
+        {% if taches.id == tache %}
+            {% set checktache = 1 %}
+        {% endif %}
+    {% endfor %}
+
+{% endif %}
 
 {% block body %}
 <style>
@@ -40,11 +48,12 @@
 
 <a {% if app.user.settinginterfacetype == 'default_view' %} href="{{ path('app_projectview', {projetid : projet}) }}" {% else %} href="{{ path('app_projets') }}" {% endif %}>Retour</a>
 
-{% if checktache == 1 %}
-{{ form(form) }}
-{% else %}
-<p>erreur</p>
-{% endif %}
+    
+    {% if checktache == 1 %}
+        {{ form(form) }}
+    {% else %}
+        <p>erreur</p>
+    {% endif %}
 
 </div>
 

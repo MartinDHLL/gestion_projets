@@ -60,7 +60,8 @@ class TaskController extends AbstractController
 
         return $this->renderForm('edit_task/index.html.twig', [
             'form' => $form,
-            'projet' => $projetid
+            'projet' => $projetid,
+            'isNew' => true
         ]);
     }
 
@@ -145,7 +146,8 @@ class TaskController extends AbstractController
         return $this->renderForm('edit_task/index.html.twig', [
             'form' => $form,
             'projet' => $projetid,
-            'tache' => $tacheid
+            'tache' => $tacheid,
+            'isNew' => false
         ]);
     }
 
@@ -185,7 +187,8 @@ class TaskController extends AbstractController
 
         return $this->renderForm('edit_task/index.html.twig',[
             'form' => $form,
-            'projet' => $projetid
+            'projet' => $projetid,
+            'isNew' => true
         ]);
     }
 
@@ -227,7 +230,8 @@ class TaskController extends AbstractController
         return $this->renderForm('edit_task/index.html.twig',[
             'form' => $form,
             'projet' => $projetid,
-            'tache' => $tache
+            'tache' => $tache,
+            'isNew' => false
         ]);
     }
 
