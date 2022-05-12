@@ -10,6 +10,7 @@ use App\Entity\SousTache;
 use App\Entity\User;
 use App\Form\SubTaskType;
 use App\Form\UserType;
+use App\Repository\TacheRepository;
 use App\Repository\UserRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -189,7 +190,7 @@ class TaskController extends AbstractController
     }
 
     #[Route('/projet/tache/modifierSousTache', name: 'app_editsubtask')]
-    public function EditSubTask(Request $request, UserInterface $currentuser, ManagerRegistry $managerRegistry, UserRepository $userrepo): Response
+    public function EditSubTask(Request $request, UserInterface $currentuser, ManagerRegistry $managerRegistry, UserRepository $userrepo, TacheRepository $tacherepo): Response
     {
         $em = $managerRegistry->getManager();
         $usersetting = $em->getRepository(User::class)->find($currentuser)->getSettinginterfacetype();
@@ -197,6 +198,8 @@ class TaskController extends AbstractController
         $projetid = $request->get('projetid');
 
         $soustache = $em->getRepository(SousTache::class)->find($request->get('soustacheid'));
+
+        $tache = $soustache->getTache()->getId();
         
         $form = $this->createForm(SubTaskType::class, $soustache);
         
@@ -223,7 +226,8 @@ class TaskController extends AbstractController
 
         return $this->renderForm('edit_task/index.html.twig',[
             'form' => $form,
-            'projet' => $projetid
+            'projet' => $projetid,
+            'tache' => $tache
         ]);
     }
 
