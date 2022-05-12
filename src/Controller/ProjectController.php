@@ -213,7 +213,7 @@ class ProjectController extends AbstractController
     }
 
     #[Route('/projet/taches', name: 'app_projectview')]
-    public function ProjectView(Request $request, ManagerRegistry $managerRegistry, UserInterface $currentuser): Response
+    public function ProjectView(Request $request, ManagerRegistry $managerRegistry): Response
     {
         $projetid = $request->get('projetid');
         

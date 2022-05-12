@@ -2,6 +2,13 @@
 
 {% block title %}STEP : Gestion Projets{% endblock %}
 
+{% set checkuser = "" %}
+{% for user in projet.users %}
+    {% if user == app.user %}
+        {% set checkuser = "55542121$$efsfhsehfseh4475qseedHGDHHG77fsefes" %}
+    {% endif %}
+{% endfor %}
+
 {% set count = 0 %}
 {% for role in app.user.roles %}
     {% if role == 'ROLE_GESTION' or role == 'ROLE_ADMIN' %}
@@ -11,14 +18,16 @@
 
 {% block body %}
 
+{% if checkuser == "55542121$$efsfhsehfseh4475qseedHGDHHG77fsefes" %}
+
 {% if app.user.settinginterfacetype == 'complete_view' %}
 
-<h1>ERREUR</h1>
+    <h1>ERREUR</h1>
 
 {% else %}
 
-{% if app.user.settingtheme == 'dark_theme' %}
-    <style>
+    {% if app.user.settingtheme == 'dark_theme' %}
+        <style>
         body {
             background-color: black;
         }
@@ -31,7 +40,8 @@
         div#buttonsbox {
             background-color: rgb(59, 55, 55);
         }
-    </style>
+        </style>
+
 {% endif %}
 
 <style>
@@ -126,6 +136,12 @@
 </div>
 
 <a style="position: fixed;bottom: 0;" href="{{ path('sendproblemtoadmin') }}">Signaler un problème à l'admin</a>
+
+{% endif %}
+
+{% else %}
+
+<h1>Accès non autorisé</h1>
 
 {% endif %}
 
