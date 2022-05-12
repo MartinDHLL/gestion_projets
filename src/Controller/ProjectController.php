@@ -12,6 +12,7 @@ use App\Entity\Projet;
 use App\Entity\User;
 use App\Form\UserType;
 use App\Repository\ProjetRepository;
+use App\Repository\TacheRepository;
 use App\Repository\UserRepository;
 use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -220,14 +221,19 @@ class ProjectController extends AbstractController
     }
 
     #[Route('/projet/taches', name: 'app_projectview')]
-    public function ProjectView(Request $request, ManagerRegistry $managerRegistry): Response
+    public function ProjectView(Request $request, ManagerRegistry $managerRegistry, TacheRepository $tacherepo, UserInterface $currentuser, UserRepository $userrepo): Response
     {
         $projetid = $request->get('projetid');
         
         $em = $managerRegistry->getManager();
         $projet = $em->getRepository(projet::class)->find($projetid);
+        $taches = $tacherepo->findBy(array('projet' => $projet));
+        $user = $userrepo->find($currentuser);
+
         return $this->render('/projet/projectview.html.twig', [
-            'projet' => $projet
+            'projet' => $projet,
+            'taches' => $taches,
+            'user' => $user
         ]);
     }
 

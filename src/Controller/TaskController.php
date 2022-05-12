@@ -44,18 +44,13 @@ class TaskController extends AbstractController
 
         if($form->isSubmitted() && $form->isValid())
         {
-            if($admin)
-            {
                 $tache = $form->getData();
                 $tache->addUser($em->getRepository(User::class)->find($currentuser));
                 $em->persist($tache);
                 $em->flush();
+                $tache->addUser($admin);
                 $tache->setProjet($projet);
                 $em->flush();
-                $admin->addTache($tache);
-                $em->persist($admin);
-                $em->flush();
-            }
             
             if($usersetting != 'default_view')
             {

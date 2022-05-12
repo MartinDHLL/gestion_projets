@@ -101,7 +101,10 @@
 
     <ul style="list-style: none;">
 
-                {% for tache in app.user.tache %}
+                {% for tache in taches %}
+                    {% for users in tache.users %}
+
+                    {% if user.id == users.id %}
 
                     <li style="background-color:white;border-radius:50px;display:block;padding-left:10%;border:2px;border-color:black;border-style:solid;" 
                     <p>{{ tache.libelle }} <span style="position: absolute; right:40%;font-size: 14pt;border-style: solid;" > Statut : {{ tache.statut }} </span> <a style="position: absolute; right:5%;" href="{{ path('app_taskadduser', {tacheid : tache.id}) }}">Utilisateurs</a> </p>
@@ -129,6 +132,10 @@
                     {% endfor %}
                     </ul>
                     <li style="padding: 1%;"></li>
+                    
+                    {% endif %}
+
+                    {% endfor %}
                 {% endfor %}
     </ul>
 
