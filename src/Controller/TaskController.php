@@ -38,6 +38,8 @@ class TaskController extends AbstractController
 
         $tache = new Tache;
 
+        $gestionnaires = $projet->getGestionnaires();
+
         $form = $this->createForm(TaskType::class, $tache);
 
         $form->handleRequest($request);
@@ -50,6 +52,14 @@ class TaskController extends AbstractController
                 $em->flush();
                 $tache->addUser($admin);
                 $tache->setProjet($projet);
+                $em->persist($tache);
+                $em->flush();
+
+                foreach ($gestionnaires as $gestionnaire) {
+                    $tache->addUser($gestionnaire);
+                }
+
+                $em->persist($tache);
                 $em->flush();
             
             if($usersetting != 'default_view')
