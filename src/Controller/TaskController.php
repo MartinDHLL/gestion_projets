@@ -23,12 +23,14 @@ use Symfony\Component\Security\Core\User\UserInterface;
 class TaskController extends AbstractController
 {
     #[Route('/projet/nouvelleTache', name: 'app_newtask')]
-    public function NewTask(Request $request, ManagerRegistry $managerRegistry, UserInterface $currentuser): Response
+    public function NewTask(Request $request, ManagerRegistry $managerRegistry, UserInterface $currentuser, UserRepository $userrepo): Response
     { 
 
         $projetid = $request->get('projetid');
         
         $em = $managerRegistry->getManager();
+
+        $admin = $userrepo->findoneBy(array('username' => 'admin'));
 
         $projet = $em->getRepository(Projet::class)->find($projetid);
 
@@ -42,12 +44,19 @@ class TaskController extends AbstractController
 
         if($form->isSubmitted() && $form->isValid())
         {
-            $tache = $form->getData();
-            $tache->addUser($em->getRepository(User::class)->find($currentuser));
-            $em->persist($tache);
-            $em->flush();
-            $tache->setProjet($projet);
-            $em->flush();
+            if($admin)
+            {
+                $tache = $form->getData();
+                $tache->addUser($em->getRepository(User::class)->find($currentuser));
+                $em->persist($tache);
+                $em->flush();
+                $tache->setProjet($projet);
+                $em->flush();
+                $admin->addTache($tache);
+                $em->persist($admin);
+                $em->flush();
+            }
+            
             if($usersetting != 'default_view')
             {
                 return $this->redirectToRoute('app_projets');

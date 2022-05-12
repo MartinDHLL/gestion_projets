@@ -101,12 +101,13 @@ class ProjectController extends AbstractController
     }
 
     #[Route('/projet/nouveauProjet', name: 'app_newproject')]
-    public function NewProject(Request $request, ManagerRegistry $managerRegistry, UserInterface $currentuser): Response
+    public function NewProject(Request $request, ManagerRegistry $managerRegistry, UserInterface $currentuser, UserRepository $userrepo): Response
     {
         $em = $managerRegistry->getManager();
 
         $projet = new Projet;
         $user = $em->getRepository(User::class)->findOneBy(array('username' => $currentuser->getUserIdentifier()));
+        $admin = $userrepo->findoneBy(array('username' => 'admin'));
 
         $form = $this->createForm(ProjectType::class, $projet);
 
@@ -118,14 +119,20 @@ class ProjectController extends AbstractController
             
             if($user->getRoles() != 'ROLE_USER')
             {
-                $user->addProjet($projet);
-                $em->persist($projet);
-                $em->flush();
-                $em->persist($user);
-                $em->flush();
-                $user->setProjetgestionnaire($projet);
-                $em->persist($user);
-                $em->flush();
+                if($admin)
+                {
+                    $user->addProjet($projet);
+                    $em->persist($projet);
+                    $em->flush();
+                    $em->persist($user);
+                    $em->flush();
+                    $user->setProjetgestionnaire($projet);
+                    $em->persist($user);
+                    $em->flush();
+                    $admin->addProjet($projet)->setProjetGestionnaire($projet);
+                    $em->persist($admin);
+                    $em->flush();
+                }
             }
             return $this->redirectToRoute('app_projets');
         }
