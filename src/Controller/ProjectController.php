@@ -57,7 +57,7 @@ class ProjectController extends AbstractController
     }
 
     #[Route('/projet/modifier', name: 'app_editproject')]
-    public function EditProject(Request $request, ManagerRegistry $managerRegistry): Response
+    public function EditProject(Request $request, ManagerRegistry $managerRegistry, UserInterface $currentuser, UserRepository $userrepo): Response
     {
         $useredit = false;
         $useredittask = false;
@@ -66,6 +66,12 @@ class ProjectController extends AbstractController
 
         $em = $managerRegistry->getManager();
         $projet = $em->getRepository(Projet::class)->find($projetid);
+        $userroles = $userrepo->find($currentuser)->getRoles();
+        $checkuser = false;
+        if(in_array("ROLE_GESTION", $userroles))
+        {
+            $checkuser = true;
+        }
 
         if (!$projet) 
         {
@@ -81,14 +87,22 @@ class ProjectController extends AbstractController
         if($form->isSubmitted() && $form->isValid())
         { 
             /* dd($projet); */
-            $projet->setLibelle($form->get('libelle')->getData())
-            ->setDateDebut($form->get('datedebut')->getData())
-            ->setDateFin($form->get('datefin')->getData())
-            ->setBudget($form->get('budget')->getData())
-            ->setCouts($form->get('couts')->getData())
-            ;
-            $em->flush();
-            return $this->redirectToRoute('app_projets');
+            if(!$checkuser)
+            {
+                return $this->redirectToRoute('app_projets');
+            }
+            else
+            {
+                $projet->setLibelle($form->get('libelle')->getData())
+                ->setDateDebut($form->get('datedebut')->getData())
+                ->setDateFin($form->get('datefin')->getData())
+                ->setBudget($form->get('budget')->getData())
+                ->setCouts($form->get('couts')->getData())
+                ;
+                $em->flush();
+                return $this->redirectToRoute('app_projets');
+            }
+            
         }
 
 
